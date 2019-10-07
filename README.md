@@ -35,3 +35,15 @@ Main Selection Menu:
       - Simulate Keys 
   
 
+## Using the VVX Class 
+
+'# python'
+'>>> import vvxme'
+'>>> dev = vvxme.vvx( '192.168.1.10', ('Polycom', '789') )'
+
+
+>
+
+
+
+
