@@ -20,6 +20,10 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 """
+
+with open('README.md') as f:
+    README = f.read()
+    
 # Arguments marked as "Required" below must be included for upload to PyPI.
 # Fields marked as "Optional" may be commented out.
 
@@ -157,22 +161,22 @@ setup(
     #
     # Similar to `install_requires` above, these must be valid existing
     # projects.
-    """
-    extras_require={  # Optional
-        'dev': ['check-manifest'],
-        'test': ['coverage'],
-    },
-    """
+    
+    #extras_require={  # Optional
+    #    'dev': ['check-manifest'],
+    #    'test': ['coverage'],
+    #},
+    
     # If there are data files included in your packages that need to be
     # installed, specify them here.
     #
     # If using Python 2.6 or earlier, then these have to be included in
     # MANIFEST.in as well.
-    """
-    package_data={  # Optional
-        'sample': ['package_data.dat'],
-    },
-    """
+    
+    #package_data={  # Optional
+    #    'sample': ['package_data.dat'],
+    #},
+    
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:
     # http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files
@@ -188,8 +192,8 @@ setup(
     # For example, the following would provide a command called `sample` which
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
-        "console_scripts": [
-            "vvxme=vvxme.__main__:main",
+        'console_scripts': [
+            'vvxme=vvxme.__main__:main',
         ],
     },
 
@@ -202,12 +206,12 @@ setup(
     # issues, where the source is hosted, where to say thanks to the package
     # maintainers, and where to support the project financially. The key is
     # what's used to render the link text on PyPI.
-    """
-    project_urls={  # Optional
-        'Bug Reports': 'https://github.com/pypa/sampleproject/issues',
-        'Funding': 'https://donate.pypi.org',
-        'Say Thanks!': 'http://saythanks.io/to/example',
-        'Source': 'https://github.com/pypa/sampleproject/',
-    },
-    """
+    
+    #project_urls={  # Optional
+    #    'Bug Reports': 'https://github.com/pypa/sampleproject/issues',
+    #    'Funding': 'https://donate.pypi.org',
+    #    'Say Thanks!': 'http://saythanks.io/to/example',
+    #    'Source': 'https://github.com/pypa/sampleproject/',
+    #},
+    
 )
