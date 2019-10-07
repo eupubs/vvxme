@@ -103,7 +103,7 @@ setup(
         'Development Status :: 5 - Production/Stable',
 
         # Indicate who your project is intended for
-        'Intended Audience :: Developers, Users',
+        #'Intended Audience :: Developers',
         #'Topic :: Software Development :: Build Tools',
 
         # Pick your license as you wish
