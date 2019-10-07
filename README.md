@@ -8,7 +8,10 @@ Prerequisite:
   - Install the project:  'pip install vvxme'
 
 ## Using the inbuilt CLI Menu
-To invoke the CLI Menu, simply open a console and type command: 'python vvxme' or 'python -m vvxme'
+To invoke the CLI Menu, simply open a console and type command: 'python vvxme' or 'python -m vvxme'  
+OS security notes:  
+For Windows users: Run the console in Administrator mode.  
+For Mac users: Run in sudo mode - 'sudo python vvxme'  
 
 ### Available menus in this version:
 Main Selection Menu:
