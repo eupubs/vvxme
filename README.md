@@ -38,10 +38,13 @@ Main Selection Menu:
 ## Using the VVX Class 
 
 Example:
+
 '''
+
 # python
 >>> import vvxme
 >>> dev = vvxme.vvx( '192.168.1.10', ('Polycom', '789') )
+
 '''
 
 >
