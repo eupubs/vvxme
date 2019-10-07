@@ -12,14 +12,14 @@ To invoke the CLI Menu, simply open a console and type command: 'python vvxme' o
 
 ### Available menus in this version:
 Main Selection Menu:
-  1. Show Device Information Menu
+  1. Show Device Information Menu *__(Useful information of your VVX using standard RestAPI queries)__
       - Show Device Info
       - Show Device Stats
       - Show Network Info
       - Show Network Stats
       - Show Line Info
       - Show Session Stats
-  2. Quick Configuration Menu
+  2. Quick Configuration Menu *__(quick fix to enabled/disable specific features on your VVX)__
       - Acoustic Fence Menu
       - Headset Configuration Menu
       - Message Waiting Indicator (LED)
@@ -30,8 +30,8 @@ Main Selection Menu:
       - SIP Autoanswer
       - SIP Debug & Logging
   3. Web Call Controls Menu
-      - Call Dial __(Remote dial-out call to TEL/SIP dialstrings from specified Line with specified duation)__
+      - Call Dial *__(Remote dial-out call to TEL/SIP dialstrings from specified Line with specified duation)__
   4. Simulate Key Events Menu
-      - Simulate Keys __(Drives the VVX using your keyboard)__
+      - Simulate Keys *__(Drives the VVX using your keyboard)__
   
 
