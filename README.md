@@ -69,12 +69,4 @@ Example:
        .callEnd() - "/api/v1/callctrl/endCall"
        .getConfig() - calls "/api/v1/mgmt/config/get"
        .setConfig() - calls "/api/v1/mgmt/config/set"
- 
-
-
-
->
-
-
-
 
