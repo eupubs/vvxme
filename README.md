@@ -10,3 +10,13 @@ Prerequisite:
 ## Using the inbuilt CLI Menu
 To invoke the CLI Menu, simply open a console and type command: 'python vvxme' or 'python -m vvxme'
 
+### Available menus in this version:
+Main Selection Menu:
+  1. Show Device Information Menu
+      - Show Device Info
+      - Show Device Stats
+  2. Quick Configuration Menu
+  3. Web Call Controls Menu
+  4. Simulate Key Events Menu
+  
+
