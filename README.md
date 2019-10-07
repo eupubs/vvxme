@@ -6,6 +6,7 @@ Manages your Poly VVX powered by RESTAPIs based on (UCS>=6.1), with CLI Menu or 
 Prerequisite:
   - Install python 3.7 or above
   - Install the project:  'pip install vvxme'
+  - Full features tested on VVX (non-touch models) running UCS 6.1. Earlier version will exibit some API errors.
 
 OS security notes:  
   - For Windows users: Run the console in Administrator mode to use VVX class in interactive mode.  
