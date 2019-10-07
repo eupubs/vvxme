@@ -29,9 +29,9 @@ Main Selection Menu:
       - Screen Capture
       - SIP Autoanswer
       - SIP Debug & Logging
-  3. Web Call Controls Menu *__(Remote dial-out call to TEL/SIP dialstrings from specified Line with specified duation)__*
+  3. Web Call Controls Menu *__(Remote dial-out using either TEL/SIP dialstrings from specified Line with specified duation)__*
       - Call Dial 
-  4. Simulate Key Events Menu *__(Drives the VVX using your keyboard)__*
+  4. Simulate Key Events Menu *__(Drive the VVX using your keyboard)__*
       - Simulate Keys 
   
 
