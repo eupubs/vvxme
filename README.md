@@ -15,8 +15,23 @@ Main Selection Menu:
   1. Show Device Information Menu
       - Show Device Info
       - Show Device Stats
+      - Show Network Info
+      - Show Network Stats
+      - Show Line Info
+      - Show Session Stats
   2. Quick Configuration Menu
+      - Acoustic Fence Menu
+      - Headset Configuration Menu
+      - Message Waiting Indicator (LED)
+      - Network Discovery - CDP
+      - Network Discovery - LLDP
+      - Remote Packet Capture
+      - Screen Capture
+      - SIP Autoanswer
+      - SIP Debug & Logging
   3. Web Call Controls Menu
+      - Call Dial __(Remote dial-out call to TEL/SIP dialstrings from specified Line with specified duation)__
   4. Simulate Key Events Menu
+      - Simulate Keys __(Drives the VVX using your keyboard)__
   
 
