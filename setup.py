@@ -188,8 +188,8 @@ setup(
     # For example, the following would provide a command called `sample` which
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
-        'console_scripts': [
-            'vvxme=vvxme.__main__:main',
+        "console_scripts": [
+            "vvxme=vvxme.__main__:main",
         ],
     },
 
