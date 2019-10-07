@@ -39,10 +39,9 @@ Main Selection Menu:
 
 Example:
 \# python
-
 \>>> import vvxme
-
 \>>> dev = vvxme.vvx( '192.168.1.10', ('Polycom', '789') )
+
 
 
 
