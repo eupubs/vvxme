@@ -52,7 +52,7 @@ def simulatekeys_submenu(dev):
     '/api/v1/mgmt/simulateKeyEvent' value. Tested on Win10 and MacOS 10.x. 
     *TAKE NOTE on Mac: Run in sudo mode and allow Accessbility to allow keyboard module to work.
     INPUTS: none 
-    OUTPUT: '/api/v1/mgmt/simulateKeyEvent' value as str
+    OUTPUT: none
     """
     from sys import platform as _platform
     
