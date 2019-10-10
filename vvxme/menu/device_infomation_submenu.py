@@ -38,7 +38,7 @@ def device_infomation_submenu(dev):
         if choice == "1":
             ## Show device info
             menu.clear()
-            print("Device Info - /api/v2/mgmt/device/info")
+            print(f"Device Info - {dev._qpaths_dict['deviceinfov2']}")
             print("======================================")
             menu.display_dict(dev.getDeviceInfoV2()["data"])
             print("")
@@ -47,7 +47,7 @@ def device_infomation_submenu(dev):
         elif choice == "2":
             # Show device stats
             menu.clear()
-            print("Device Stats - /api/v1/mgmt/device/stats")
+            print(f"Device Stats - {dev._qpaths_dict['devicestats']}")
             print("========================================")
             menu.display_dict(dev.getDeviceStats()["data"])
             print("")
@@ -56,7 +56,7 @@ def device_infomation_submenu(dev):
         elif choice == "3":
             # Show network info
             menu.clear()
-            print("Network Info - /api/v1/mgmt/network/info")
+            print(f"Network Info - {dev._qpaths_dict['network']}")
             print("========================================")
             menu.display_dict(dev.getNetwork()["data"])
             print("")
@@ -65,7 +65,7 @@ def device_infomation_submenu(dev):
         elif choice == "4":
             # Show network stats
             menu.clear()
-            print("Network Stats - /api/v1/mgmt/network/stats")
+            print(f"Network Stats - {dev._qpaths_dict['networkstats']}")
             print("==========================================")
             menu.display_dict(dev.getNetworkStats()["data"])
             print("")
@@ -74,7 +74,7 @@ def device_infomation_submenu(dev):
         elif choice == "5":
             # Show line info
             menu.clear()
-            print("Line Info - /api/v2/mgmt/lineInfo")
+            print(f"Line Info - {dev._qpaths_dict['lineinfov2']}")
             print("=================================")            
             menu.display_dict(dev.getLineInfoV2()["data"])
             print("")
@@ -83,8 +83,8 @@ def device_infomation_submenu(dev):
         elif choice == "6":
             # Show Running info
             menu.clear()
-            print("Running Config - /api/v1/mgmt/device/runningConfig")
-            print("=================================")            
+            print(f"Running Config - {dev._qpaths_dict['runningConfig']}")
+            print("==================================================")            
             menu.display_dict(dev.getRunningConfig()["data"])
             print("")
             input("Press Enter to continue...")
@@ -92,7 +92,7 @@ def device_infomation_submenu(dev):
         elif choice == "7":
             # Show session stats
             menu.clear()
-            print("Session Stats - /api/v1/mgmt/media/sessionStats")
+            print(f"Session Stats - {dev._qpaths_dict['sessionStats']}")
             print("===============================================")            
             menu.display_dict(dev.getSessionStats()["data"])
             print("")
@@ -137,8 +137,8 @@ def calllogs_submenu(dev):
         if choice == "1":
             ## Show missed calls
             menu.clear()
-            print("Call Logs - /api/v1/mgmt/callLogs/missed")
-            print("========================================")
+            print(f"Missed Calls - {dev._qpaths_dict['callLogs_missed']}")
+            print("===========================================")
             menu.display_dict(dev.getCallLogs("missed")["data"])
             print("")
             input("Press Enter to continue...")
@@ -146,8 +146,8 @@ def calllogs_submenu(dev):
         elif choice == "2":
             # Show received calls
             menu.clear()
-            print("Call Logs - /api/v1/mgmt/callLogs/received")
-            print("==========================================")
+            print(f"Received Calls - {dev._qpaths_dict['callLogs_received']}")
+            print("===============================================")
             menu.display_dict(dev.getCallLogs("received")["data"])
             print("")
             input("Press Enter to continue...")
@@ -155,8 +155,8 @@ def calllogs_submenu(dev):
         elif choice == "3":
             # Show placed calls
             menu.clear()
-            print("Call Logs - /api/v1/mgmt/callLogs/placed")
-            print("========================================")
+            print(f"Placed Calls - {dev._qpaths_dict['callLogs_placed']}")
+            print("===========================================")
             menu.display_dict(dev.getCallLogs("placed")["data"])
             print("")
             input("Press Enter to continue...")
