@@ -24,7 +24,7 @@ Main Selection Menu:
       - Show Network Stats
       - Show Line Info
       - Show Session Stats
-  2. Quick Configuration Menu *__(Quick fix to enabled/disable specific features on your VVX)__*
+  2. Quick Configuration Menu *__(Quick fix to enable/disable specific features on your VVX)__*
       - Acoustic Fence Menu
       - Headset Configuration Menu
       - Message Waiting Indicator (LED)
@@ -34,7 +34,7 @@ Main Selection Menu:
       - Screen Capture
       - SIP Autoanswer
       - SIP Debug & Logging
-  3. Web Call Controls Menu *__(Remote dial-out using either TEL/SIP dialstrings from specified Line with specified duation)__*
+  3. Web Call Controls Menu *__(Remote dial-out using either TEL/SIP dialstrings from specified Line with specified duration)__*
       - Call Dial 
   4. Simulate Key Events Menu *__(Drive the VVX using your keyboard)__*
       - Simulate Keys 
