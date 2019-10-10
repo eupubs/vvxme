@@ -4,7 +4,7 @@
 # In[4]:
 
 name = "vvxme"
-__version__ = "1.0.0"
+__version__ = "1.0.0.post4"
 __all__ = [ "vvx" ]
 
 
