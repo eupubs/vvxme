@@ -9,7 +9,7 @@ import vvxme
 import menu
 
 module_version = "1.0.0.post4"
-module_date = "Nov 2019"
+module_date = "Oct 2019"
 
 
 # In[ ]:
