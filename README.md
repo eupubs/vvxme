@@ -44,8 +44,8 @@ Main Selection Menu:
       - Screen Capture
       - SIP Autoanswer
       - SIP Debug & USB Logging
-      - ~~ Network Discovery - CDP~~ 
-      - ~~ Network Discovery - LLDP~~ 
+      - ~~Network Discovery - CDP~~ 
+      - ~~Network Discovery - LLDP~~ 
   4. Web Call Controls Menu *__(Remote dial-out using either TEL/SIP dialstrings from specified Line with specified duration)__*
       - Call Dial 
   5. Simulate Key Events Menu *__(Drive the VVX using your keyboard)__*
