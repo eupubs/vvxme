@@ -41,10 +41,18 @@ class vvx():
        .getDeviceStats() - calls "/api/v1/mgmt/device/stats"
        .getNetworkStats() - calls "/api/v1/mgmt/network/stats"
        .getSessionStats() - calls "/api/v1/mgmt/media/sessionStats"
-       .callDial() - "/api/v1/callctrl/dial"
-       .callEnd() - "/api/v1/callctrl/endCall"
+       .getCallLogs() - calls "/api/v1/mgmt/callLogs"
        .getConfig() - calls "/api/v1/mgmt/config/get"
        .setConfig() - calls "/api/v1/mgmt/config/set"
+       .callDial() - "/api/v1/callctrl/dial"
+       .callEnd() - "/api/v1/callctrl/endCall"
+       .simulateKeyEvent() - calls "/api/v1/mgmt/simulateKeyEvent"
+       .simulateTextInput() - calls "/api/v1/mgmt/simulateTextInput"
+       .safeRestart() - calls "/api/v1/mgmt/safeRestart"
+       .safeReboot() - calls "/api/v1/mgmt/safeReboot"
+       .factoryReset() - calls "/api/v1/mgmt/factoryReset"
+       .updateConfig() - calls "/api/v1/mgmt/updateConfiguration"
+       .resetConfig() - calls "/api/v1/mgmt/configReset"
     """
 
     
@@ -65,11 +73,23 @@ class vvx():
             "callresume" : "/api/v1/callctrl/resumeCall",
             "devicestats" : "/api/v1/mgmt/device/stats",
             "networkstats" : "/api/v1/mgmt/network/stats",
-            "sessionStats" : "/api/v1/mgmt/media/sessionStats"
-        
+            "sessionStats" : "/api/v1/mgmt/media/sessionStats",
+            "callLogs" : "/api/v1/mgmt/callLogs",
+            "callLogs_missed" : "/api/v1/mgmt/callLogs/missed",
+            "callLogs_received" : "/api/v1/mgmt/callLogs/received",
+            "callLogs_placed" : "/api/v1/mgmt/callLogs/placed",
+            "safeRestart" : "/api/v1/mgmt/safeRestart",
+            "safeReboot" : "/api/v1/mgmt/safeReboot",
+            "factoryReset" : "/api/v1/mgmt/factoryReset",
+            "updateConfig" : "/api/v1/mgmt/updateConfiguration",
+            "resetConfig" : "/api/v1/mgmt/configReset",
+            "resetConfig_cloud" : "/api/v1/mgmt/configReset/cloud",
+            "resetConfig_local" : "/api/v1/mgmt/configReset/local",
+            "resetConfig_web" : "/api/v1/mgmt/configReset/web",
+            "resetConfig_device" : "/api/v1/mgmt/configReset/device"
     }
     
-    __valid_versions = ("6.1.0",)
+    _valid_versions = ("6.0.0", "6.1.0",)
     
         
     def __init__(self, ipaddr, auth_credentials, use_https=True, verify_secure=False):
@@ -87,18 +107,18 @@ class vvx():
         else:
             self.__session.mount(f"http://{self.ipaddr}", vvx_adapter)
 
-        # Extracts attributes' values for model, firmware, macaddress and __swVer
+        # Extracts attributes' values for model, firmware, macaddress and _swVer
         dev = self.getDeviceInfoV2()
         if dev != None:
             self.model = dev["data"]["ModelNumber"]
             self.firmware = dev["data"]["Firmware"]["Application"]
             self.macaddress = dev["data"]["MACAddress"]
             
-            for item in self.__valid_versions:
+            for item in self._valid_versions:
                 if self.firmware.startswith(item):
-                    self.__swVer = item
+                    self._swVer = item
                 else:
-                    self.__swVer = None
+                    self._swVer = None
         else:
             self.model = None
             self.firmware = None
@@ -151,18 +171,20 @@ class vvx():
             elif rtype == "POST":
                 headers = { "Content-Type" : ctype }
                 r = s.post(url=target_url, data=json.dumps(rdata), headers=headers, 
-                                  auth=self.auth_credentials, verify=self.verify_secure, timeout=(1, 1))
+                                  auth=self.auth_credentials, verify=self.verify_secure, timeout=(3, 3))
                 r.raise_for_status()
                 return r
 
         except requests.exceptions.HTTPError as http_err:
             logging.error( f"HTTP Error: <{http_err}>")
+            time.sleep(3)
         except requests.exceptions.ConnectionError as connect_err:
             logging.error(f"Connection Error: <{connect_err}>")
         except requests.exceptions.Timeout as timeout_err:
             logging.error(f"Timeout Error: <{timeout_err}>")
         except requests.exceptions.RequestException as err:
             logging.error(f"Request Error: <{err}>")
+            time.sleep(3)
 
             
     def getDeviceInfoV2(self):
@@ -250,6 +272,93 @@ class vvx():
         if dev != None:
             return dev.json()
 
+    def getCallLogs(self, logtype="all"):
+        """
+        Method calls internal httpRequest to GET "callLogs" : "/api/v1/mgmt/callLogs".
+        INPUTS: logtype as str. Valid strings are "all", "missed", "received", "placed".
+        OUTPUT: Returns response body as dict.
+        """        
+        if logtype == "missed":
+            dev = self.__httpRequest("callLogs_missed")
+        elif logtype == "received":
+            dev = self.__httpRequest("callLogs_received")
+        elif logtype == "placed":
+            dev = self.__httpRequest("callLogs_placed")
+        elif logtype == "all":
+            dev = self.__httpRequest("callLogs")
+        else:
+            return logging.error(f"<Invalid input [logtype]: '{logtype}'>")
+            
+        if dev != None:
+            return dev.json()        
+
+        
+    def safeRestart(self):
+        """
+        Method calls internal httpRequest to POST "safeRestart" : "/api/v1/mgmt/safeRestart".
+        INPUTS: none
+        OUTPUT: Returns response body as dict.
+        """
+        dev = self.__httpRequest(qpath="safeRestart", rtype="POST")
+        if dev != None:
+            return dev.json()
+
+        
+    def safeReboot(self):
+        """
+        Method calls internal httpRequest to POST "safeReboot" : "/api/v1/mgmt/safeReboot".
+        INPUTS: none
+        OUTPUT: Returns response body as dict.
+        """
+        dev = self.__httpRequest(qpath="safeReboot", rtype="POST")
+        if dev != None:
+            return dev.json()
+
+        
+    def factoryReset(self):
+        """
+        Method calls internal httpRequest to POST "factoryReset" : "/api/v1/mgmt/factoryReset".
+        INPUTS: none
+        OUTPUT: Returns response body as dict.
+        """
+        dev = self.__httpRequest(qpath="factoryReset", rtype="POST")
+        if dev != None:
+            return dev.json()
+
+
+    def updateConfig(self):
+        """
+        Method calls internal httpRequest to POST "updateConfig" : "/api/v1/mgmt/updateConfiguration".
+        INPUTS: none
+        OUTPUT: Returns response body as dict.
+        """
+        dev = self.__httpRequest(qpath="updateConfig", rtype="POST")
+        if dev != None:
+            return dev.json()
+
+    
+    def resetConfig(self, configtype="all"):
+        """
+        Method calls internal httpRequest to POST "resetConfig" : "/api/v1/mgmt/configReset".
+        INPUTS: configtype as str. Valid strings are "all", "cloud", "local", "web", "device".
+        OUTPUT: Returns response body as dict.
+        """        
+        if configtype == "cloud":
+            dev = self.__httpRequest(qpath="resetConfig_cloud", rtype="POST")
+        elif configtype == "local":
+            dev = self.__httpRequest(qpath="resetConfig_local", rtype="POST")
+        elif configtype == "web":
+            dev = self.__httpRequest(qpath="resetConfig_web", rtype="POST")
+        elif configtype == "device":
+            dev = self.__httpRequest(qpath="resetConfig_device", rtype="POST")
+        elif configtype == "all":
+            dev = self.__httpRequest(qpath="resetConfig", rtype="POST")
+        else:
+            return logging.error(f"<Invalid input [configtype]: '{configtype}'>")
+            
+        if dev != None:
+            return dev.json()        
+    
 
     def getConfig(self, rdata, ctype="application/json"):
         """
@@ -340,7 +449,7 @@ class vvx():
         return response
 
     
-    def callDial(self, dest, line=1, linetype="Tel", duration=0, ctype="application/json"):
+    def callDial(self, dest, line=1, linetype="Tel", duration=10, ctype="application/json"):
         """
         Method calls internal httpRequest to POST "calldial" : "/api/v1/callctrl/dial". Auto-disconnect is supported for a 
         singe line(1) dialout scenario only.
@@ -348,9 +457,8 @@ class vvx():
             dest as string (either in TEL, eg. 3002 or SIP URI format, eg. 3002@apbeta.internal),
             line as int (defaults to line 1), 
             linestype as string (SIP, H323 or TEL, should match dest string format),
-                duration as int (in seconds - defaults to zero meaning no auto-disconnect, 
-                when value is 1s or more (on line1 only), method will track duration and 
-                auto-disconnect after duration lapsed.),
+                duration as int (in seconds - defaults to 10S,when value is 1s or more (on line1 only), 
+                method will track duration and auto-disconnect after duration lapsed.), 0s means no auto-disconnect.
             ctype as string(Content-Type).
         OUTPUT: Returns response body as dict when successful, None when unsuccessful.
         """
@@ -396,26 +504,27 @@ class vvx():
                         logging.info(f"CallState to '{dest}' is currently '{callstate}'.")
                         print(f"CallState to '{dest}' is currently '{callstate}'.")
 
-                        if ( dest == session_RemotePartyNumber ) & ( callstate == "Connected" ):
-                            # Validates called party number and connected state before executing callEnd.
-                            logging.info(f"Call is now connected to '{dest}'...")
-                            print(f"Call is now connected to '{dest}'...")
+                        if duration > 0:                       
+                            if ( dest == session_RemotePartyNumber ) & ( callstate == "Connected" ):
+                                # Validates called party number and connected state before executing callEnd.
+                                logging.info(f"Call is now connected to '{dest}'...")
+                                print(f"Call is now connected to '{dest}'...")
 
-                            callHandle = call["data"][0]["CallHandle"]
-                            time.sleep(duration)
-                            logging.info(f"Duration {duration}s has lapsed, attempting to disconnect call now.")
-                            print(f"Duration {duration}s has lapsed, attempting to disconnect call now.")
+                                callHandle = call["data"][0]["CallHandle"]
+                                time.sleep(duration)
+                                logging.info(f"Duration {duration}s has lapsed, attempting to disconnect call now.")
+                                print(f"Duration {duration}s has lapsed, attempting to disconnect call now.")
 
-                            res = self.callEnd(callHandle)
-                            if res != None:
-                                logging.info(f"Call to '{dest}' has ended.")
-                                print(f"Call to '{dest}' has ended.")
-                            else:
-                                logging.info(f"Disconnection attempt to '{dest}' at '{callHandle}' failed. \nPlease check device physically to end the session.")
-                                print(f"Disconnection attempt to '{dest}' at '{callHandle}' failed. \nPlease check device physically to end the session.")
+                                res = self.callEnd(callHandle)
+                                if res != None:
+                                    logging.info(f"Call to '{dest}' has ended.")
+                                    print(f"Call to '{dest}' has ended.")
+                                else:
+                                    logging.info(f"Disconnection attempt to '{dest}' at '{callHandle}' failed. \nPlease check device physically to end the session.")
+                                    print(f"Disconnection attempt to '{dest}' at '{callHandle}' failed. \nPlease check device physically to end the session.")
 
-                            return res
-                            
+                                return res            
+                
                 time.sleep(3)
                 
             return dev.json()
@@ -461,7 +570,7 @@ class vvx():
         
     def simulateTextInput(self, textinput, replacetext="true", ctype="application/json"):
         """
-        Method calls internal httpRequest to POST "callend" : "/api/v1/callctrl/endCall".
+        Method calls internal httpRequest to POST "simulateTextInput" : "/api/v1/mgmt/simulateTextInput".
         INPUTS: textinput as string, 
                 replacetext as string ('true' or 'false', if set to true, it replaces any existing text in phone UI’s text field 
                 with the value provided.),
@@ -482,4 +591,7 @@ class vvx():
 
 
 # In[ ]:
+
+
+
 

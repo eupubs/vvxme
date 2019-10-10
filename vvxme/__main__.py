@@ -8,7 +8,7 @@ import time
 import vvxme
 import menu
 
-module_version = "1.0.0"
+module_version = "1.0.0.post4"
 module_date = "Oct 2019"
 
 
@@ -31,7 +31,7 @@ def main():
         credentials =[]
         print(f"Welcome to VVXME CLI Menu version {module_version}")
         print("")
-        print("1. Connect to a VVX/Trio")
+        print("1. Connect to a VVX")
         print("0. Exit")
         choice = input("Enter your choice[0-1]: ")
         

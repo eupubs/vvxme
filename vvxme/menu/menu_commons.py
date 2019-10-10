@@ -22,6 +22,24 @@ def clear():
          
 
 
+# In[ ]:
+
+
+def flush_input():
+    """
+    Method attempts to flush keyboard inputs.
+    INPUTS: none
+    OUTPUT: none
+    """
+    try:
+        import msvcrt
+        while msvcrt.kbhit():
+            msvcrt.getch()
+    except ImportError:
+        import sys, termios
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+
+
 # In[9]:
 
 
@@ -207,11 +225,35 @@ def getduration_input():
 # In[ ]:
 
 
+def getconfirmation_input(action):
+    """
+    Method collects user confirmation to proceed with action 
+    INPUTS: action as str, description of the action 
+    OUTPUT: Returns boolean, True to proceed, False to not proceed.
+    """
+    loop = True
+    
+    while loop:
+        
+        user_input = input(f"Confirm to proceed with '{action}'? [y/N]: ")
+        
+        if (user_input == "Y") | (user_input == "y"):
+            return True
+        elif (user_input == "") | (user_input == "N") | (user_input == "n"): 
+            return False
+        else:
+            print(f"Invalid input '{user_input}' >> Expecting [y/Y/n/N].")                
+    
+
+
+# In[ ]:
+
+
 def connect_device(module_version, username="Polycom", password="789"):
     """
     Method collects user inputs for phone's IP address, username and password
     INPUTS: none 
-    OUTPUT: Returns a result as list, [ ip, (username, passwd) ]
+    OUTPUT: Returns result as list, [ ip, (username, passwd) ]
     """
     import ipaddress
     
@@ -238,4 +280,62 @@ def connect_device(module_version, username="Polycom", password="789"):
         password = pwd
 
     return [ip.exploded, (username, password)]
+
+
+# In[ ]:
+
+
+def configfile_parser(filename="import.cfg"):
+    """
+    Method attempts to parse input 'filename' as XML first. Upon XML parse failure, attempt next to parse as JSON.
+    Method doesn't cater for absolute path+name, expects 'filename' to exists in current folder only.
+    XML Body: uses standard VVX/UCS syntax. Does not parse Root Element.
+    JSON Body: expects UCS RestAPI body, eg. { 'data' : { 'parameter1' : 'value1', 'parameter2' : 'value2', ... } }
+    INPUTS: filename as str, expect to be existent no further filename checks.
+    OUTPUT: Returns result as dict when parse is successful, None when parse fails.
+    """
+    
+    import json
+    import xml.etree.ElementTree as ET
+    import time
+    
+    params_dict = {}
+    body_dict = {}
+    
+    try:
+        tree = ET.parse(filename)
+        root = tree.getroot()
+        
+        for child in root:
+            for sub in child.iter():
+                if sub.attrib:
+                    for k, v in sub.attrib.items():
+                        params_dict[k] = v
+        
+        body_dict["data"] = params_dict
+        print("")
+        print("Parse XML Success!")
+        print("==================")
+        return body_dict
+           
+    except ET.ParseError as xml_err:
+        print(f"[XML] Parse Error: <{xml_err}>\n")
+        print("Trying to parse JSON now...\n")
+        #input("Press Enter to continue...")
+
+        try:
+            with open(filename, 'r') as f:
+                params_dict = json.load(f)
+                body_dict = params_dict
+                print("")
+                print("Parse JSON Success!")
+                print("===================")
+                return body_dict
+                
+        except ValueError as json_err:
+            print(f"[JSON] Parse Error: <{json_err}>\n") 
+            print("Failed parse JSON too. Please try again...\n")
+            input("Press Enter to continue...")
+            return
+            
 

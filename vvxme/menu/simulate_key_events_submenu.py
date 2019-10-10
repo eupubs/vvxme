@@ -141,4 +141,5 @@ def simulatekeys_submenu(dev):
     kb.hook(print_pressed_keys)
     kb.wait('esc')
     keyboard.unhook_all()
+    menu.flush_input()
 
