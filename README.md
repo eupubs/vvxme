@@ -58,7 +58,7 @@ Example:
 \# python  
 \>>> import vvxme  
 \>>> dev = vvxme.vvx( '192.168.1.10', ('Polycom', '789') )  
-\>>> dev.getDeviceInfoV2()
+\>>> dev.getDeviceInfoV2()  
 {'data': {'DeviceType': 'HardwareEndpoint', 'IPv6ULAAddress': '::', 'AttachedHardware': {'EM': []}, 'DeviceVendor': 'Polycom', 'CanApplyShutdownRequest': 'True', 'Firmware': {'Application': '5.9.3.2857 02-Jul-19 06:14', 'Updater': '5.9.7.26508', 'BootBlock': '3.0.6.0098 (48830-001)'}, 'ReadyToUse': 'True', 'IPStack': 'IPv4 Only', 'ModelNumber': 'VVX 350', 'UpTime': {'Seconds': '1', 'Days': '0', 'Minutes': '3', 'Hours': '1'}, 'IPAddress': '192.168.1.120', 'PreferredNetwork': 'IPv6', 'IPv6Address': '::', 'IntendToShutdown': 'False', 'IPv6LinkAddress': '::', 'AppState': 'AppStateCall', 'MACAddress': '64167f3959ca'}, 'Status': '2000'}
 
 
