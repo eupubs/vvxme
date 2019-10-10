@@ -45,7 +45,7 @@ def device_management_submenu(dev):
         elif choice == "3":
             # Update Configuration
             menu.clear()
-            print("Update Configuration - /api/v1/mgmt/updateConfiguration")
+            print(f"Update Configuration - {dev._qpaths_dict['updateConfig']}")
             print("=======================================================")
             res = menu.getconfirmation_input("Update Configuration")
             if res:
@@ -59,7 +59,7 @@ def device_management_submenu(dev):
         elif choice == "4":
             # Restart Device
             menu.clear()
-            print("Restart Device - /api/v1/mgmt/safeRestart")
+            print(f"Restart Device - {dev._qpaths_dict['safeRestart']}")
             print("=========================================")
             res = menu.getconfirmation_input("Restart Device")
             if res:
@@ -73,7 +73,7 @@ def device_management_submenu(dev):
         elif choice == "5":
             # Reboot Device
             menu.clear()
-            print("Reboot Device - /api/v1/mgmt/safeReboot")
+            print(f"Reboot Device - {dev._qpaths_dict['safeReboot']}")
             print("=======================================")
             res = menu.getconfirmation_input("Reboot Device")
             if res:
@@ -87,7 +87,7 @@ def device_management_submenu(dev):
         elif choice == "6":
             # Factory Reset Device
             menu.clear()
-            print("Factory Reset - /api/v1/mgmt/factoryReset")
+            print(f"Factory Reset - {dev._qpaths_dict['factoryReset']}")
             print("=========================================")
             res = menu.getconfirmation_input("Factory Reset Device")
             if res:
@@ -134,45 +134,70 @@ def resetconfig_submenu(dev):
         if choice == "1":
             ## Reset all
             menu.clear()
-            print("Reset Configuration - /api/v1/mgmt/configReset")
+            print(f"Reset Configuration - {dev._qpaths_dict['resetConfig']}")
             print("==============================================")
-            print(dev.resetConfig())
-            print("")
+            res = menu.getconfirmation_input("Reset All configuration")
+            if res:
+                print("Resetting ALL configuration...")
+                print(dev.resetConfig())
+            else:
+                print("\nNo action taken.")
+            print("")                  
             input("Press Enter to continue...")
             menu.clear()
         elif choice == "2":
             ## Reset cloud
             menu.clear()
-            print("Reset Configuration - /api/v1/mgmt/configReset/cloud")
+            print(f"Reset Configuration - {dev._qpaths_dict['resetConfig_cloud']}")
             print("====================================================")
-            print(dev.resetConfig("cloud"))
+            res = menu.getconfirmation_input("Reset Cloud configuration")
+            if res:
+                print("Resetting Cloud configuration...")
+                print(dev.resetConfig("cloud"))
+            else:
+                print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
             menu.clear()
         elif choice == "3":
             ## Reset local
             menu.clear()
-            print("Reset Configuration - /api/v1/mgmt/configReset/local")
+            print(f"Reset Configuration - {dev._qpaths_dict['resetConfig_local']}")
             print("====================================================")
-            print(dev.resetConfig("local"))
+            res = menu.getconfirmation_input("Reset Local configuration")
+            if res:
+                print("Resetting Local configuration...")
+                print(dev.resetConfig("local"))
+            else:
+                print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
             menu.clear()
         elif choice == "4":
             ## Reset web
             menu.clear()
-            print("Reset Configuration - /api/v1/mgmt/configReset/web")
+            print(f"Reset Configuration - {dev._qpaths_dict['resetConfig_web']}")
             print("==================================================")
-            print(dev.resetConfig("web"))
+            res = menu.getconfirmation_input("Reset Web configuration")
+            if res:
+                print("Resetting Web configuration...")
+                print(dev.resetConfig("web"))
+            else:
+                print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
             menu.clear()
         elif choice == "5":
             ## Reset web
             menu.clear()
-            print("Reset Configuration - /api/v1/mgmt/configReset/device")
+            print(f"Reset Configuration - {dev._qpaths_dict['resetConfig_device']}")
             print("=====================================================")
-            print(dev.resetConfig("device"))
+            res = menu.getconfirmation_input("Reset Device configuration")
+            if res:
+                print("Resetting Device configuration...")
+                print(dev.resetConfig("device"))
+            else:
+                print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
             menu.clear()
