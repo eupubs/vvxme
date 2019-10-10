@@ -8,7 +8,7 @@ import time
 import vvxme
 from vvxme import menu
 
-module_version = "1.0.0.post5"
+module_version = "1.0.0.post6"
 module_date = "Oct 2019"
 
 
