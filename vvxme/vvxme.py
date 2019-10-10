@@ -56,7 +56,7 @@ class vvx():
     """
 
     
-    __qpaths_dict={
+    _qpaths_dict={
 
             "sipStatus" : "/api/v1/webCallControl/sipStatus",
             "network" : "/api/v1/mgmt/network/info", 
@@ -156,9 +156,9 @@ class vvx():
         s = self.__session
                
         if self.use_https:
-            target_url = f"https://{self.ipaddr}{self.__qpaths_dict[qpath]}"
+            target_url = f"https://{self.ipaddr}{self._qpaths_dict[qpath]}"
         else:
-            target_url = f"http://{self.ipaddr}{self.__qpaths_dict[qpath]}"
+            target_url = f"http://{self.ipaddr}{self._qpaths_dict[qpath]}"
         
         
         try:    

@@ -5,7 +5,7 @@
 
 
 import keyboard
-import menu
+from vvxme import menu
 import time
 import sys
 
