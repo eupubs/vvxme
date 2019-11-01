@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[8]:
+# In[ ]:
 
 
 def clear(): 
@@ -40,7 +40,11 @@ def flush_input():
         termios.tcflush(sys.stdin, termios.TCIOFLUSH)
 
 
+<<<<<<< Updated upstream
 # In[9]:
+=======
+# In[ ]:
+>>>>>>> Stashed changes
 
 
 def display_dict(dev, indent_count=0):
@@ -87,7 +91,7 @@ def display_dict(dev, indent_count=0):
         
 
 
-# In[10]:
+# In[ ]:
 
 
 def getline_input():
@@ -119,7 +123,7 @@ def getline_input():
     
 
 
-# In[11]:
+# In[ ]:
 
 
 def getlinetype_input():
@@ -149,7 +153,7 @@ def getlinetype_input():
     
 
 
-# In[12]:
+# In[ ]:
 
 
 def getdest_input(linetype="TEL"):
@@ -285,7 +289,99 @@ def connect_device(module_version, username="Polycom", password="789"):
 # In[ ]:
 
 
+<<<<<<< Updated upstream
 def configfile_parser(filename="import.cfg"):
+=======
+def pdmssp_connect_device(module_version):
+    """
+    Method collects user inputs for phone's MAC address.
+    INPUTS: none 
+    OUTPUT: Returns macaddr when successful, None when unsuccessful.
+    """
+    import re
+
+    print(f"Welcome to VVXME CLI Menu version {module_version}\n")
+    print("Attempting to connect endpoint on PDMS-SP:\n")
+    print("[Step-1]: Collect phone MAC Address.\n")
+                    
+    macaddr = ""
+    loop = True 
+    
+    while loop:            
+        macaddr = input("Enter MAC address of the phone(no separators[-:], Eg.64167f12a34b): ")
+
+        if re.match("([0-9a-f]{2}){6}$", macaddr.lower()):
+            print(f"{macaddr} is a valid MAC address.")
+            return macaddr
+        
+        else:
+            print(f"Invalid input '{macaddr}' >> Invalid MAC address format. Do not use separators[-:], Eg.64167f12a34b")
+    
+
+
+# In[ ]:
+
+
+def pdmssp_configfile_parser(module_version):
+    """
+    Method attempts to parse pdmssp config file for client_id, client_secret and org_id. 
+    *NOTE1: config file is expected to live in HOME directory, with default name as 'pdmssp.cfg'
+        Syntax of config file:
+                            [API_KEY]
+                            client_id = <xxxxx>
+                            client_secret = <xxxx>
+                            
+                            [ORG]
+                            org_id = <xxx>
+    *NOTE2: Environment variable 'HOME' containing the folder location has be created in Windows OS.                        
+    INPUTS: absolute_path as str, filename as str.
+    OUTPUT: Returns result as dict when parse is successful, None when parse fails.
+    """   
+    import configparser
+    
+    print("\n[Step-2]: Retrieve client_id, client_secret and org_id from config file.")
+    print("***NOTE: Expecting config file to live in folder defined in HOME environment variable!***\n")
+          
+    filename = input(f"Enter config filename (default='pdmssp.cfg'): ")
+    if filename == "":
+        filename = 'pdmssp.cfg'
+   
+    from pathlib import Path
+    home_path = Path.home()
+          
+    if not home_path:
+        print(f"\nHome folder not found!: {str(home_path)}") 
+        return
+          
+    cfgfile = home_path/filename
+
+    if not cfgfile.exists():
+        print(f"\nFile not found!: {str(cfgfile)}")
+        return
+    
+    body = {}
+    
+    try:
+        config = configparser.ConfigParser()
+        config.read(cfgfile)    
+
+        body["client_id"] = config["API_KEY"]["client_id"]
+        body["client_secret"] = config["API_KEY"]["client_secret"]
+        body["org_id"] = config["ORG"]["org_id"]
+
+        return body      
+        
+    except KeyError as key_err:
+        logging.error(f"KeyError Exception: {key_err}")
+    except configparser.Error as err:
+        logging.info(f"Exception: {err}")
+
+
+# In[ ]:
+
+
+def ucs_configfile_parser(filename="import.cfg"):
+>>>>>>> Stashed changes
     """
     Method attempts to parse input 'filename' as XML first. Upon XML parse failure, attempt next to parse as JSON.
     Method doesn't cater for absolute path+name, expects 'filename' to exists in current folder only.

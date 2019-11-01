@@ -11,7 +11,11 @@ import time
 # In[ ]:
 
 
+<<<<<<< Updated upstream
 def device_management_submenu(dev):  
+=======
+def device_management_submenu(dev, pdmssp=False):  
+>>>>>>> Stashed changes
     """
     Method - Show Device Information Menu
     INPUTS: dev as object 
@@ -35,12 +39,24 @@ def device_management_submenu(dev):
         if choice == "1":
             # Import from cfg
             menu.clear()
+<<<<<<< Updated upstream
             importconfiguration_submenu(dev)
+=======
+            if not pdmssp:
+                importconfiguration_submenu(dev)
+            else:
+                print("Method is currently not supported.")
+                input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "2":
             # Reset Configuration
             menu.clear()
+<<<<<<< Updated upstream
             resetconfig_submenu(dev)
+=======
+            resetconfig_submenu(dev, pdmssp)
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "3":
             # Update Configuration
@@ -50,11 +66,18 @@ def device_management_submenu(dev):
             res = menu.getconfirmation_input("Update Configuration")
             if res:
                 print("Updating Configuration...")
+<<<<<<< Updated upstream
                 print(dev.updateConfig())
             else:
                 print("\nNo action taken.")            
             print("")
             input("Press Enter to continue...")
+=======
+                print(dev.updateConfig(pdmssp))
+            else:
+                print("\nNo action taken.")            
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "4":
             # Restart Device
@@ -64,11 +87,18 @@ def device_management_submenu(dev):
             res = menu.getconfirmation_input("Restart Device")
             if res:
                 print("Restarting Device...")
+<<<<<<< Updated upstream
                 print(dev.safeRestart())
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
+=======
+                print(dev.safeRestart(pdmssp))
+            else:
+                print("\nNo action taken.")
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "5":
             # Reboot Device
@@ -78,11 +108,18 @@ def device_management_submenu(dev):
             res = menu.getconfirmation_input("Reboot Device")
             if res:
                 print("Rebooting Device...")
+<<<<<<< Updated upstream
                 print(dev.safeReboot())
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
+=======
+                print(dev.safeReboot(pdmssp))
+            else:
+                print("\nNo action taken.")
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "6":
             # Factory Reset Device
@@ -92,11 +129,18 @@ def device_management_submenu(dev):
             res = menu.getconfirmation_input("Factory Reset Device")
             if res:
                 print("Factory Resetting Device...")
+<<<<<<< Updated upstream
                 print(dev.factoryReset())
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
+=======
+                print(dev.factoryReset(pdmssp))
+            else:
+                print("\nNo action taken.")
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "0":
             # Exit menu
@@ -110,7 +154,11 @@ def device_management_submenu(dev):
 # In[ ]:
 
 
+<<<<<<< Updated upstream
 def resetconfig_submenu(dev):  
+=======
+def resetconfig_submenu(dev, pdmssp=False):  
+>>>>>>> Stashed changes
     """
     Method - Show Reset Config Menu
     INPUTS: dev as object 
@@ -139,11 +187,18 @@ def resetconfig_submenu(dev):
             res = menu.getconfirmation_input("Reset All configuration")
             if res:
                 print("Resetting ALL configuration...")
+<<<<<<< Updated upstream
                 print(dev.resetConfig())
             else:
                 print("\nNo action taken.")
             print("")                  
             input("Press Enter to continue...")
+=======
+                print(dev.resetConfig("all", pdmssp))
+            else:
+                print("\nNo action taken.")
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "2":
             ## Reset cloud
@@ -153,11 +208,18 @@ def resetconfig_submenu(dev):
             res = menu.getconfirmation_input("Reset Cloud configuration")
             if res:
                 print("Resetting Cloud configuration...")
+<<<<<<< Updated upstream
                 print(dev.resetConfig("cloud"))
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
+=======
+                print(dev.resetConfig("cloud", pdmssp))
+            else:
+                print("\nNo action taken.")
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "3":
             ## Reset local
@@ -167,11 +229,18 @@ def resetconfig_submenu(dev):
             res = menu.getconfirmation_input("Reset Local configuration")
             if res:
                 print("Resetting Local configuration...")
+<<<<<<< Updated upstream
                 print(dev.resetConfig("local"))
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
+=======
+                print(dev.resetConfig("local", pdmssp))
+            else:
+                print("\nNo action taken.")
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "4":
             ## Reset web
@@ -181,11 +250,18 @@ def resetconfig_submenu(dev):
             res = menu.getconfirmation_input("Reset Web configuration")
             if res:
                 print("Resetting Web configuration...")
+<<<<<<< Updated upstream
                 print(dev.resetConfig("web"))
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
+=======
+                print(dev.resetConfig("web", pdmssp))
+            else:
+                print("\nNo action taken.")
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "5":
             ## Reset web
@@ -195,11 +271,18 @@ def resetconfig_submenu(dev):
             res = menu.getconfirmation_input("Reset Device configuration")
             if res:
                 print("Resetting Device configuration...")
+<<<<<<< Updated upstream
                 print(dev.resetConfig("device"))
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
+=======
+                print(dev.resetConfig("device", pdmssp))
+            else:
+                print("\nNo action taken.")
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "0":
             # Exit menu
@@ -241,7 +324,11 @@ def importconfiguration_submenu(dev):
             filename = "import.cfg"
         
         if os.path.isfile(filename):                   
+<<<<<<< Updated upstream
             body_dict = menu.configfile_parser(filename)
+=======
+            body_dict = menu.ucs_configfile_parser(filename)
+>>>>>>> Stashed changes
 
             if body_dict != None:
                 

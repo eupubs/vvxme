@@ -47,12 +47,20 @@ setup(
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
+<<<<<<< Updated upstream
     version='1.0.0.post6',  # Required
+=======
+    version='1.1.0',  # Required
+>>>>>>> Stashed changes
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
+<<<<<<< Updated upstream
     description='Manages your Poly VVX powered by RESTAPIs based on (UCS>=6.1), with CLI Menu or simply use the available VVX class to develop your own applications.',  # Optional
+=======
+    description='Manages your Poly VVX powered by RESTAPIs based on (UCS>=6.1) directly or now via PDMS-SP!, with CLI Menu or simply use the available VVX class to develop your own applications.',  # Optional
+>>>>>>> Stashed changes
 
     # This is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
@@ -151,7 +159,7 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['datetime', 'ipaddress', 'json5', 'keyboard', 'requests' ],  # Optional
+    install_requires=['datetime', 'ipaddress', 'json5', 'keyboard', 'requests', 'configparser' ],  # Optional
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
@@ -173,9 +181,9 @@ setup(
     # If using Python 2.6 or earlier, then these have to be included in
     # MANIFEST.in as well.
     
-    #package_data={  # Optional
-    #    'sample': ['package_data.dat'],
-    #},
+    package_data={  # Optional
+        'vvxme': ['data/*.cfg.example'],
+    },
     
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:
