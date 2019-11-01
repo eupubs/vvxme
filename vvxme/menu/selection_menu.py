@@ -11,7 +11,7 @@ import time
 # In[ ]:
 
 
-def selection_menu(dev):
+def selection_menu(dev, pdmssp=False):
     """
     Method is the main selection menu, after successful connectivity to device.
     INPUTS: dev as object 
@@ -23,7 +23,8 @@ def selection_menu(dev):
        
     while loop:
         
-        print(f"Connected to device {dev.model} with MAC {dev.macaddress} running on build {dev.firmware} in {dev.baseprofile} mode.")
+        #print(f"Connected to device {dev.model} with MAC {dev.macaddress} running on build {dev.firmware} in {dev.baseprofile} mode.")
+        print(f"Connected to device {dev.model} with MAC {dev.macaddress} running on build {dev.firmware}.")
         
         for i in range(dev.linescount):
             print(f">> Line {i+1} configured as {dev.lines[i+1]} in [{dev.linestates[dev.lines[i+1]]}] state")
@@ -42,27 +43,43 @@ def selection_menu(dev):
         if choice == "1":
             # Calls device_infomation_submenu
             menu.clear()
-            menu.device_infomation_submenu(dev)
+            menu.device_infomation_submenu(dev, pdmssp)
             menu.clear()
         elif choice == "2":
             # Calls device_management_submenu
+<<<<<<< Updated upstream
             menu.clear()
             menu.device_management_submenu(dev)
             menu.clear()
         elif choice == "3":
             # Calls quick_configuration_submenu
+=======
+>>>>>>> Stashed changes
             menu.clear()
-            menu.quick_configuration_submenu(dev)
+            menu.device_management_submenu(dev, pdmssp)
             menu.clear()
+<<<<<<< Updated upstream
+        elif choice == "4":
+            # Calls web_call_controls_submenu
+=======
+        elif choice == "3":
+            # Calls quick_configuration_submenu
+>>>>>>> Stashed changes
+            menu.clear()
+            menu.quick_configuration_submenu(dev, pdmssp)
+            menu.clear()
+<<<<<<< Updated upstream
+=======
         elif choice == "4":
             # Calls web_call_controls_submenu
             menu.clear()
-            menu.web_call_controls_submenu(dev)
+            menu.web_call_controls_submenu(dev, pdmssp)
             menu.clear()
+>>>>>>> Stashed changes
         elif choice == "5":
             # Calls simulate_key_events_submenu
             menu.clear()
-            menu.simulate_key_events_submenu(dev)
+            menu.simulate_key_events_submenu(dev, pdmssp)
             menu.clear()
         elif choice == "0":
             # Exit menu

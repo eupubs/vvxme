@@ -11,7 +11,7 @@ import time
 # In[ ]:
 
 
-def device_infomation_submenu(dev):  
+def device_infomation_submenu(dev, pdmssp=False):  
     """
     Method - Show Device Information Menu
     INPUTS: dev as object 
@@ -40,44 +40,64 @@ def device_infomation_submenu(dev):
             menu.clear()
             print(f"Device Info - {dev._qpaths_dict['deviceinfov2']}")
             print("======================================")
-            menu.display_dict(dev.getDeviceInfoV2()["data"])
-            print("")
-            input("Press Enter to continue...")
+            res = dev.getDeviceInfoV2(pdmssp)
+            print("")                  
+            if res != None:     
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
             menu.clear()
         elif choice == "2":
             # Show device stats
             menu.clear()
             print(f"Device Stats - {dev._qpaths_dict['devicestats']}")
             print("========================================")
-            menu.display_dict(dev.getDeviceStats()["data"])
-            print("")
-            input("Press Enter to continue...")
+            res = dev.getDeviceStats(pdmssp)
+            print("")                  
+            if res != None:
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
             menu.clear()
         elif choice == "3":
             # Show network info
             menu.clear()
             print(f"Network Info - {dev._qpaths_dict['network']}")
             print("========================================")
-            menu.display_dict(dev.getNetwork()["data"])
-            print("")
-            input("Press Enter to continue...")
+            res = dev.getNetwork(pdmssp)
+            print("")                  
+            if res != None:
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
             menu.clear()
         elif choice == "4":
             # Show network stats
             menu.clear()
             print(f"Network Stats - {dev._qpaths_dict['networkstats']}")
             print("==========================================")
-            menu.display_dict(dev.getNetworkStats()["data"])
-            print("")
-            input("Press Enter to continue...")
+            res = dev.getNetworkStats(pdmssp)
+            print("")                  
+            if res != None:
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
             menu.clear()
         elif choice == "5":
             # Show line info
             menu.clear()
             print(f"Line Info - {dev._qpaths_dict['lineinfov2']}")
             print("=================================")            
-            menu.display_dict(dev.getLineInfoV2()["data"])
+            res = dev.getLineInfoV2(pdmssp)
+            print("")                  
+            if res != None:
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
+            menu.clear()        
+        elif choice == "6":
+            # Show Running info
+            menu.clear()
+            print(f"Running Config - {dev._qpaths_dict['runningConfig']}")
+            print("==================================================")            
+            res = dev.getRunningConfig(pdmssp)
             print("")
+<<<<<<< Updated upstream
             input("Press Enter to continue...")
             menu.clear()        
         elif choice == "6":
@@ -88,20 +108,35 @@ def device_infomation_submenu(dev):
             menu.display_dict(dev.getRunningConfig()["data"])
             print("")
             input("Press Enter to continue...")
+=======
+            if res != None:
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "7":
             # Show session stats
             menu.clear()
             print(f"Session Stats - {dev._qpaths_dict['sessionStats']}")
             print("===============================================")            
-            menu.display_dict(dev.getSessionStats()["data"])
+            res = dev.getSessionStats(pdmssp)
             print("")
+<<<<<<< Updated upstream
             input("Press Enter to continue...")
+=======
+            if res != None:
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()        
         elif choice == "8":
             # Show call logs 
             menu.clear()      
+<<<<<<< Updated upstream
             calllogs_submenu(dev)
+=======
+            calllogs_submenu(dev, pdmssp)
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "0":
             # Exit menu
@@ -115,7 +150,11 @@ def device_infomation_submenu(dev):
 # In[ ]:
 
 
+<<<<<<< Updated upstream
 def calllogs_submenu(dev):  
+=======
+def calllogs_submenu(dev, pdmssp=False):  
+>>>>>>> Stashed changes
     """
     Method - Show Call Logs Menu
     INPUTS: dev as object 
@@ -139,27 +178,51 @@ def calllogs_submenu(dev):
             menu.clear()
             print(f"Missed Calls - {dev._qpaths_dict['callLogs_missed']}")
             print("===========================================")
+<<<<<<< Updated upstream
             menu.display_dict(dev.getCallLogs("missed")["data"])
             print("")
             input("Press Enter to continue...")
+=======
+            res = dev.getCallLogs("missed", pdmssp)
+            print("")                  
+            if res != None:
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "2":
             # Show received calls
             menu.clear()
             print(f"Received Calls - {dev._qpaths_dict['callLogs_received']}")
             print("===============================================")
+<<<<<<< Updated upstream
             menu.display_dict(dev.getCallLogs("received")["data"])
             print("")
             input("Press Enter to continue...")
+=======
+            res = dev.getCallLogs("received", pdmssp)
+            print("")                  
+            if res != None:
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "3":
             # Show placed calls
             menu.clear()
             print(f"Placed Calls - {dev._qpaths_dict['callLogs_placed']}")
             print("===========================================")
+<<<<<<< Updated upstream
             menu.display_dict(dev.getCallLogs("placed")["data"])
             print("")
             input("Press Enter to continue...")
+=======
+            res = dev.getCallLogs("placed", pdmssp)
+            print("")                  
+            if res != None:
+                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
+            input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
             menu.clear()
         elif choice == "0":
             # Exit menu

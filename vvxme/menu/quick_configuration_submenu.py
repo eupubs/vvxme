@@ -11,7 +11,7 @@ import time
 # In[ ]:
 
 
-def quick_configuration_submenu(dev):
+def quick_configuration_submenu(dev, pdmssp=False):
     """
     Method - Quick Configuration Menu
     INPUTS: dev as object 
@@ -20,6 +20,12 @@ def quick_configuration_submenu(dev):
     
     loop = True
     menu.clear()
+    
+    if pdmssp:
+        print("Menu is currently not supported.")
+        input("\nPress Enter to continue...")
+        menu.clear()
+        return
     
     while loop:
         
@@ -291,6 +297,8 @@ def headsetconfiguration_submenu(dev):
             time.sleep(1)
             menu.clear()
             
+<<<<<<< Updated upstream
+=======
 
 
 # In[ ]:
@@ -299,6 +307,63 @@ def headsetconfiguration_submenu(dev):
 def messagewaitingindicator_submenu(dev, line=1):
    
     menu.clear()
+    body_dict = { "data" : {} }
+    loop = True
+
+    while loop:
+
+        print("Current Value:")
+        print("==============")
+        for i in range (dev.linescount):
+            query_dict = { "data" : [f"msg.mwi.{i+1}.led"] }
+            menu.display_dict(dev.getConfig(query_dict)["data"])
+        print("***NOTE: Changing this value will cause device to restart!***")
+        print("")
+        print("1. Enable Message Waiting Indicator(LED)")
+        print("2. Disable Message Waiting Indicator(LED)")
+        print("0. Exit")
+        choice = input("Enter your choice[0-2]: ")
+        
+        if choice == "1":
+            line = menu.getline_input()
+            body_dict["data"][f"msg.mwi.{line}.led"] = "1"
+            print(dev.setConfig(body_dict))
+            print("Device is restarting, pausing for 30sec...")
+            time.sleep(30)
+            #input("Press Enter to continue...")
+            return
+        elif choice == "2":
+            line = menu.getline_input()
+            body_dict["data"][f"msg.mwi.{line}.led"] = "0"
+            print(dev.setConfig(body_dict))
+            print("Device is restarting, pausing for 30sec...")
+            time.sleep(30)
+            #input("Press Enter to continue...")
+            return              
+        elif choice == "0":
+            # Exit menu
+            loop = False
+        else:
+            print(f"Invalid input '{choice}' >> Expecting [0-2].")
+            time.sleep(1)
+            menu.clear()
+>>>>>>> Stashed changes
+
+
+# In[ ]:
+
+
+<<<<<<< Updated upstream
+def messagewaitingindicator_submenu(dev, line=1):
+   
+    menu.clear()
+=======
+def pagination_submenu(dev):
+   
+    menu.clear()
+    invalid_models = ("VVX 101", "VVX 201", "VVX 150")
+    query_dict = { "data" : ["up.Pagination.enabled"] }
+>>>>>>> Stashed changes
     body_dict = { "data" : {} }
     loop = True
 
@@ -351,6 +416,16 @@ def pagination_submenu(dev):
     query_dict = { "data" : ["up.Pagination.enabled"] }
     body_dict = { "data" : {} }
     loop = True
+    
+    if dev.model in invalid_models:
+        print(f"This device {dev.model} doesn't support this setting. Unsupported models are {invalid_models}")
+        input("Press Enter to continue...")
+        return
+
+    if not dev._swVer:
+        print(f"This firmware {dev.firmware} doesn't support this setting. Supported versions are {dev._valid_versions}")
+        input("Press Enter to continue...")
+        return
     
     if dev.model in invalid_models:
         print(f"This device {dev.model} doesn't support this setting. Unsupported models are {invalid_models}")
@@ -569,6 +644,8 @@ def sipdebugusblogging_submenu(dev):
             body_dict["data"]["log.render.file.size"] = "32"
             body_dict["data"]["log.level.change.sip"] = "4"
             body_dict["data"]["feature.usbLogging.enabled"] = "0"
+<<<<<<< Updated upstream
+=======
             print(dev.setConfig(body_dict))
             input("Press Enter to continue...")
             return              
@@ -579,6 +656,161 @@ def sipdebugusblogging_submenu(dev):
             print(f"Invalid input '{choice}' >> Expecting [0-2].")
             time.sleep(1)
             menu.clear()
+
+
+# In[ ]:
+
+
+def networkcdp_submenu(dev):
+    # not in use...
+
+    menu.clear()
+    query_dict = { "data" : ["device.net.cdpEnabled"] }
+    body_dict = { "data" : {} }
+    loop = True
+    
+    while loop:
+
+        print("Current Value:")
+        print("==============")
+        menu.display_dict(dev.getConfig(query_dict)["data"])
+        print("")
+        print("1. Enable CDP")
+        print("2. Disable CDP")
+        print("0. Exit")
+        choice = input("Enter your choice[0-2]: ")
+        
+        if choice == "1":
+            # Calls setConfig using body_dict
+            body_dict["data"]["device.set"] = "1"
+            body_dict["data"]["device.net.cdpEnabled"] = "1"
+            body_dict["data"]["device.net.cdpEnabled.set"] = "1"
+            print(dev.setConfig(body_dict))
+            input("Press Enter to continue...")
+            return
+        elif choice == "2":
+            # Calls setConfig using body_dict
+            body_dict["data"]["device.set"] = "1"
+            body_dict["data"]["device.net.cdpEnabled"] = "0"
+            body_dict["data"]["device.net.cdpEnabled.set"] = "1"
+            print(dev.setConfig(body_dict))
+            input("Press Enter to continue...")
+            return              
+        elif choice == "0":
+            # Exit menu
+            loop = False
+        else:
+            print(f"Invalid input '{choice}' >> Expecting [0-2].")
+            time.sleep(1)
+            menu.clear()
+
+
+# In[ ]:
+
+
+def networklldp_submenu(dev):
+    # not in use...
+   
+    menu.clear()
+    query_dict = { "data" : ["device.net.lldpEnabled"] }
+    body_dict = { "data" : {} }
+    loop = True
+    
+    while loop:
+
+        print("Current Value:")
+        print("==============")
+        menu.display_dict(dev.getConfig(query_dict)["data"])
+        print("")
+        print("1. Enable LLDP")
+        print("2. Disable LLDP")
+        print("0. Exit")
+        choice = input("Enter your choice[0-2]: ")
+        
+        if choice == "1":
+            # Calls setConfig using body_dict
+            body_dict["data"]["device.set"] = "1"
+            body_dict["data"]["device.net.lldpEnabled"] = "1"
+            body_dict["data"]["device.net.lldpEnabled.set"] = "1"
+            print(dev.setConfig(body_dict))
+            input("Press Enter to continue...")
+            return
+        elif choice == "2":
+            # Calls setConfig using body_dict
+            body_dict["data"]["device.set"] = "1"
+            body_dict["data"]["device.net.lldpEnabled"] = "0"
+            body_dict["data"]["device.net.lldpEnabled.set"] = "0"
+>>>>>>> Stashed changes
+            print(dev.setConfig(body_dict))
+            input("Press Enter to continue...")
+            return              
+        elif choice == "0":
+            # Exit menu
+            loop = False
+        else:
+            print(f"Invalid input '{choice}' >> Expecting [0-2].")
+            time.sleep(1)
+            menu.clear()
+            
+
+
+# In[ ]:
+
+
+def phonetheme_submenu(dev):
+    # not in use...
+   
+    menu.clear()
+    invalid_models = ("VVX 101", "VVX 201", "VVX 150")
+    query_dict = { "data" : ["device.theme"] }
+    body_dict = { "data" : {} }
+    loop = True
+    
+    if dev.model in invalid_models:
+        print(f"This device {dev.model} doesn't support this setting. Unsupported models are {invalid_models}")
+        input("Press Enter to continue...")
+        return
+    
+    while loop:
+
+        print("Current Value:")
+        print("==============")
+        menu.display_dict(dev.getConfig(query_dict)["data"])
+        print("***NOTE: Changing this value will cause device to reboot!***")
+        print("")
+        print("1. Classic Theme")
+        print("2. BroadSoft Theme")
+        print("0. Exit")
+        choice = input("Enter your choice[0-2]: ")
+        
+        if choice == "1":
+            # Calls setConfig using body_dict
+            body_dict["data"]["device.set"] = "1"
+            body_dict["data"]["device.theme"] = "Classic"
+            body_dict["data"]["device.theme.set"] = "1"
+            print(dev.setConfig(body_dict))
+            print("Device is rebooting, pausing for 30sec...")
+            time.sleep(30)
+            #input("Press Enter to continue...")
+            return
+        elif choice == "2":
+            # Calls setConfig using body_dict
+            body_dict["data"]["device.set"] = "1"
+            body_dict["data"]["device.theme"] = "BroadSoft"
+            body_dict["data"]["device.theme.set"] = "1"
+            print(dev.setConfig(body_dict))
+            print("Device is rebooting, pausing for 30sec...")
+            time.sleep(30)
+            #input("Press Enter to continue...")
+            return              
+        elif choice == "0":
+            # Exit menu
+            loop = False
+        else:
+            print(f"Invalid input '{choice}' >> Expecting [0-2].")
+            time.sleep(1)
+            menu.clear()
+            
 
 
 # In[ ]:

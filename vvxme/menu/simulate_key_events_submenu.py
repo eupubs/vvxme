@@ -13,7 +13,7 @@ import sys
 # In[ ]:
 
 
-def simulate_key_events_submenu(dev):
+def simulate_key_events_submenu(dev, pdmssp=False):
     """
     Method - Simulate Key Events Menu
     INPUTS: dev as object 
@@ -32,7 +32,7 @@ def simulate_key_events_submenu(dev):
         
         if choice == "1":
             menu.clear()
-            simulatekeys_submenu(dev)
+            simulatekeys_submenu(dev, pdmssp)
             menu.clear()
         elif choice == "0":
             # Exit menu
@@ -46,7 +46,7 @@ def simulate_key_events_submenu(dev):
 # In[ ]:
 
 
-def simulatekeys_submenu(dev):
+def simulatekeys_submenu(dev, pdmssp=False):
     """
     Method uses keyboard module to capture keyboard event (.is_pressed) and then match to return valid 
     '/api/v1/mgmt/simulateKeyEvent' value. Tested on Win10 and MacOS 10.x. 
@@ -104,7 +104,6 @@ def simulatekeys_submenu(dev):
     print("Letters:[(h)ome, (m)icMute, (r)edial, (e)nter, backspace/delete]")
     print("Softkeys(1,2,3,4): [!, @, #, $], Volume: [+,-]")
     print("\nPress 'esc' to exit.\n")
-     
         
     def print_pressed_keys(e):
         
@@ -116,7 +115,7 @@ def simulatekeys_submenu(dev):
                     pressed_key = keys_dict[keys[item].name]                
                     print(f"Keyboard code pressed: {item}, translated to '{pressed_key}' for VVX", end='\r')
                     sys.stdout.write("\033[K")  # clears previous print() line
-                    dev.simulateKeyEvent(pressed_key)
+                    dev.simulateKeyEvent(pressed_key, pdmssp)
     
         elif _platform == "darwin":
             # MacOS
@@ -128,7 +127,7 @@ def simulatekeys_submenu(dev):
                         pressed_key = keys_dict[keys[item].name]                
                         print(f"Keyboard code pressed: {item}, translated to '{pressed_key}' for VVX", end='\r')
                         sys.stdout.write("\033[K")  # clears previous print() line
-                        dev.simulateKeyEvent(pressed_key)
+                        dev.simulateKeyEvent(pressed_key, pdmssp)
             elif len(keys) == 2:
                 # double inputs - looking for shift + 1,2,3,4
                 list_keys = list(keys)
@@ -136,7 +135,7 @@ def simulatekeys_submenu(dev):
                     if ( list_keys[0] in v ) & ( list_keys[1] in v ):
                         print(f"Keyboard code pressed: {v}, translated to '{k}' for VVX", end='\r')
                         sys.stdout.write("\033[K")  # clears previous print() line
-                        dev.simulateKeyEvent(k)               
+                        dev.simulateKeyEvent(k, pdmssp)               
     
     kb.hook(print_pressed_keys)
     kb.wait('esc')
