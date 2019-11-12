@@ -41,7 +41,11 @@ def flush_input():
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 # In[9]:
+=======
+# In[ ]:
+>>>>>>> Stashed changes
 =======
 # In[ ]:
 >>>>>>> Stashed changes
@@ -229,6 +233,41 @@ def getduration_input():
 # In[ ]:
 
 
+<<<<<<< Updated upstream
+=======
+def getcallhandle_input():
+    """
+    Method collects user inputs for callhandle as str
+    INPUTS: none 
+    OUTPUT: Returns int. 
+    """
+   
+    loop = True
+    
+    while loop:
+        
+        callHandle = input("Enter callHandle: ")
+        
+        if duration == "":
+            # empty input defaults to 10.
+            return 10
+        
+        if duration.isdigit(): 
+            if ( int(duration) < 0 ) | ( int(duration) > 600 ):
+                print(f"Invalid input '{duration}' >> Expecting integer(0-600).")
+            else:
+                loop = False
+        else:
+            print(f"Invalid input '{duration}' >> Expecting integer.")            
+    
+    return int(duration)
+    
+
+
+# In[ ]:
+
+
+>>>>>>> Stashed changes
 def getconfirmation_input(action):
     """
     Method collects user confirmation to proceed with action 
@@ -290,8 +329,11 @@ def connect_device(module_version, username="Polycom", password="789"):
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 def configfile_parser(filename="import.cfg"):
 =======
+=======
+>>>>>>> Stashed changes
 def pdmssp_connect_device(module_version):
     """
     Method collects user inputs for phone's MAC address.
@@ -372,15 +414,26 @@ def pdmssp_configfile_parser(module_version):
         return body      
         
     except KeyError as key_err:
+<<<<<<< Updated upstream
         logging.error(f"KeyError Exception: {key_err}")
     except configparser.Error as err:
         logging.info(f"Exception: {err}")
+=======
+        print(f"\nKeyError Exception: {key_err}")
+        input("\nPress Enter to continue...")
+    except configparser.Error as err:
+        print(f"\nException: {err}")
+        input("\nPress Enter to continue...")
+>>>>>>> Stashed changes
 
 
 # In[ ]:
 
 
 def ucs_configfile_parser(filename="import.cfg"):
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     """
     Method attempts to parse input 'filename' as XML first. Upon XML parse failure, attempt next to parse as JSON.

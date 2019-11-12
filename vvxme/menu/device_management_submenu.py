@@ -12,7 +12,11 @@ import time
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 def device_management_submenu(dev):  
+=======
+def device_management_submenu(dev, pdmssp=False):  
+>>>>>>> Stashed changes
 =======
 def device_management_submenu(dev, pdmssp=False):  
 >>>>>>> Stashed changes
@@ -40,20 +44,30 @@ def device_management_submenu(dev, pdmssp=False):
             # Import from cfg
             menu.clear()
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             importconfiguration_submenu(dev)
 =======
+=======
+>>>>>>> Stashed changes
             if not pdmssp:
                 importconfiguration_submenu(dev)
             else:
                 print("Method is currently not supported.")
                 input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "2":
             # Reset Configuration
             menu.clear()
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             resetconfig_submenu(dev)
+=======
+            resetconfig_submenu(dev, pdmssp)
+>>>>>>> Stashed changes
 =======
             resetconfig_submenu(dev, pdmssp)
 >>>>>>> Stashed changes
@@ -67,16 +81,22 @@ def device_management_submenu(dev, pdmssp=False):
             if res:
                 print("Updating Configuration...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 print(dev.updateConfig())
             else:
                 print("\nNo action taken.")            
             print("")
             input("Press Enter to continue...")
 =======
+=======
+>>>>>>> Stashed changes
                 print(dev.updateConfig(pdmssp))
             else:
                 print("\nNo action taken.")            
             input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "4":
@@ -88,16 +108,22 @@ def device_management_submenu(dev, pdmssp=False):
             if res:
                 print("Restarting Device...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 print(dev.safeRestart())
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
 =======
+=======
+>>>>>>> Stashed changes
                 print(dev.safeRestart(pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "5":
@@ -109,16 +135,22 @@ def device_management_submenu(dev, pdmssp=False):
             if res:
                 print("Rebooting Device...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 print(dev.safeReboot())
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
 =======
+=======
+>>>>>>> Stashed changes
                 print(dev.safeReboot(pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "6":
@@ -130,16 +162,22 @@ def device_management_submenu(dev, pdmssp=False):
             if res:
                 print("Factory Resetting Device...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 print(dev.factoryReset())
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
 =======
+=======
+>>>>>>> Stashed changes
                 print(dev.factoryReset(pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "0":
@@ -155,7 +193,11 @@ def device_management_submenu(dev, pdmssp=False):
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 def resetconfig_submenu(dev):  
+=======
+def resetconfig_submenu(dev, pdmssp=False):  
+>>>>>>> Stashed changes
 =======
 def resetconfig_submenu(dev, pdmssp=False):  
 >>>>>>> Stashed changes
@@ -188,16 +230,22 @@ def resetconfig_submenu(dev, pdmssp=False):
             if res:
                 print("Resetting ALL configuration...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 print(dev.resetConfig())
             else:
                 print("\nNo action taken.")
             print("")                  
             input("Press Enter to continue...")
 =======
+=======
+>>>>>>> Stashed changes
                 print(dev.resetConfig("all", pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "2":
@@ -209,16 +257,22 @@ def resetconfig_submenu(dev, pdmssp=False):
             if res:
                 print("Resetting Cloud configuration...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 print(dev.resetConfig("cloud"))
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
 =======
+=======
+>>>>>>> Stashed changes
                 print(dev.resetConfig("cloud", pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "3":
@@ -230,16 +284,22 @@ def resetconfig_submenu(dev, pdmssp=False):
             if res:
                 print("Resetting Local configuration...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 print(dev.resetConfig("local"))
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
 =======
+=======
+>>>>>>> Stashed changes
                 print(dev.resetConfig("local", pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "4":
@@ -251,16 +311,22 @@ def resetconfig_submenu(dev, pdmssp=False):
             if res:
                 print("Resetting Web configuration...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 print(dev.resetConfig("web"))
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
 =======
+=======
+>>>>>>> Stashed changes
                 print(dev.resetConfig("web", pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "5":
@@ -272,16 +338,22 @@ def resetconfig_submenu(dev, pdmssp=False):
             if res:
                 print("Resetting Device configuration...")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 print(dev.resetConfig("device"))
             else:
                 print("\nNo action taken.")
             print("")
             input("Press Enter to continue...")
 =======
+=======
+>>>>>>> Stashed changes
                 print(dev.resetConfig("device", pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             menu.clear()
         elif choice == "0":
@@ -325,7 +397,11 @@ def importconfiguration_submenu(dev):
         
         if os.path.isfile(filename):                   
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             body_dict = menu.configfile_parser(filename)
+=======
+            body_dict = menu.ucs_configfile_parser(filename)
+>>>>>>> Stashed changes
 =======
             body_dict = menu.ucs_configfile_parser(filename)
 >>>>>>> Stashed changes
