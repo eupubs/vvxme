@@ -13,13 +13,19 @@ __all__ = [ "clear",
             "getduration_input", 
             "getconfirmation_input", 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             "connect_device", 
             "configfile_parser", 
 =======
+=======
+>>>>>>> Stashed changes
             "connect_device",
             "pdmssp_connect_device",
             "pdmssp_configfile_parser",
             "ucs_configfile_parser", 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             "selection_menu", 
             "device_infomation_submenu", 
@@ -57,7 +63,13 @@ from .menu_commons import getduration_input
 from .menu_commons import getconfirmation_input
 from .menu_commons import connect_device
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 from .menu_commons import configfile_parser
+=======
+from .menu_commons import pdmssp_connect_device
+from .menu_commons import pdmssp_configfile_parser
+from .menu_commons import ucs_configfile_parser
+>>>>>>> Stashed changes
 =======
 from .menu_commons import pdmssp_connect_device
 from .menu_commons import pdmssp_configfile_parser

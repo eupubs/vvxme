@@ -1,8 +1,19 @@
 # vvxme
+<<<<<<< Updated upstream
 version: 1.1.0
 
 Manages your Poly VVX powered by RESTAPIs based on (UCS>=6.1) directly or now via PDMS-SP!, with CLI Menu or simply use the available VVX class to develop your own applications.
 
+=======
+version: 1.1.0.post1
+
+Manages your Poly VVX powered by RESTAPIs based on (UCS>=6.1) directly or now via PDMS-SP!, with CLI Menu or simply use the available VVX class to develop your own applications.
+
+1.1.0.post1 Updates:
+  - Bug fix to handle multiple lines.
+  - General error handling improvements on vvx class and main.    
+
+>>>>>>> Stashed changes
 What's new on this build:
   - Connect now to your VVX on PDMS-SP! 
   - New menu options in **bold**.
@@ -104,8 +115,13 @@ PDMS-SP Example:
 \2019-10-31 10:30:36 INFO     Request -->> https://pcs-api-na.obitalk.com/api/v2/domain/xxxxx/devices/xxxxx/ucsapi, Body: {'method': 'GET', 'apiurl': '/v2/mgmt/device/info'}  
 \2019-10-31 10:30:36 INFO     Response <<-- <201>  
 {'data': {'httpStatus': 200, 'body': {'uploadTime': '2019-10-31T10:30:38+0800', 'data': {'DeviceType': 'HardwareEndpoint', 'ModelNumber': 'VVX 501', 'Firmware': {'BootBlock': '3.0.5.0131 (48500-001)', 'Application': '6.1.0.6189 31-Jul-19 02:54', 'Updater': '6.1.0.6163'}, 'MACAddress': '64167f0945f4', 'IPAddress': '10.250.150.93', 'DeviceVendor': 'Polycom', 'ReadyToUse': 'True', 'AttachedHardware': {'EM': [], 'Camera': 'yes'}, 'UpTime': {'Minutes': '13', 'Seconds': '7', 'Hours': '20', 'Days': '12'}, 'IPStack': 'IPv4 Only', 'PreferredNetwork': 'IPv6', 'IPv6Address': '::', 'IPv6LinkAddress': '::', 'IPv6ULAAddress': '::', 'AppState': 'AppStateCall', 'CanApplyShutdownRequest': 'True', 'IntendToShutdown': 'False'}, 'versionInfo': '1.0', 'Status': '2000', 'eventMonotonicTime': '357h:10m:15s:203ms'}}}  
+<<<<<<< Updated upstream
 
 
+=======
+
+
+>>>>>>> Stashed changes
     """
     Class for VVX based on UCS 6.1.0 REST APIs.
     INPUTS for instance creation:

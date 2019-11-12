@@ -149,6 +149,7 @@ def acousticfencemenu_submenu(dev):
 
 
 def activecallscreen_submenu(dev):
+<<<<<<< Updated upstream
    
     menu.clear()
     query_dict = { "data" : ["up.LineViewCallStatus.enabled"] }
@@ -255,9 +256,11 @@ def fontsizecustomization_submenu(dev):
 
 
 def headsetconfiguration_submenu(dev):
+=======
+>>>>>>> Stashed changes
    
     menu.clear()
-    query_dict = { "data" : ["usb.headset.config.enabled"] }
+    query_dict = { "data" : ["up.LineViewCallStatus.enabled"] }
     body_dict = { "data" : {} }
     loop = True
 
@@ -272,20 +275,20 @@ def headsetconfiguration_submenu(dev):
         print("==============")
         menu.display_dict(dev.getConfig(query_dict)["data"])
         print("")
-        print("1. Enable Headset Configuration Menu")
-        print("2. Disable Headset Configuration Menu")
+        print("1. Enable Active Call Screen")
+        print("2. Disable Active Call Screen")
         print("0. Exit")
         choice = input("Enter your choice[0-2]: ")
         
         if choice == "1":
             # Calls setConfig using body_dict
-            body_dict["data"]["usb.headset.config.enabled"] = "1"
+            body_dict["data"]["up.LineViewCallStatus.enabled"] = "1"
             print(dev.setConfig(body_dict))
             input("Press Enter to continue...")
             return
         elif choice == "2":
             # Calls setConfig using body_dict
-            body_dict["data"]["usb.headset.config.enabled"] = "0"
+            body_dict["data"]["up.LineViewCallStatus.enabled"] = "0"
             print(dev.setConfig(body_dict))
             input("Press Enter to continue...")
             return              
@@ -304,39 +307,61 @@ def headsetconfiguration_submenu(dev):
 # In[ ]:
 
 
-def messagewaitingindicator_submenu(dev, line=1):
+def fontsizecustomization_submenu(dev):
    
     menu.clear()
+    valid_models = ("VVX 250", "VVX 350", "VVX 450")
+    query_dict = { "data" : ["device.font.size"] }
     body_dict = { "data" : {} }
     loop = True
-
+    
+    if dev.model not in valid_models:
+        print(f"This device {dev.model} doesn't support this setting. Supported models are {valid_models}")
+        input("Press Enter to continue...")
+        return
+    
+    if not dev._swVer:
+        print(f"This firmware {dev.firmware} doesn't support this setting. Supported versions are {dev._valid_versions}")
+        input("Press Enter to continue...")
+        return
+    
     while loop:
 
         print("Current Value:")
         print("==============")
-        for i in range (dev.linescount):
-            query_dict = { "data" : [f"msg.mwi.{i+1}.led"] }
-            menu.display_dict(dev.getConfig(query_dict)["data"])
-        print("***NOTE: Changing this value will cause device to restart!***")
+        menu.display_dict(dev.getConfig(query_dict)["data"])
+        print("***NOTE: Changing this value will cause device to reboot!***")
         print("")
-        print("1. Enable Message Waiting Indicator(LED)")
-        print("2. Disable Message Waiting Indicator(LED)")
+        print("1. Normal Font Size")
+        print("2. Large Font Size")
         print("0. Exit")
         choice = input("Enter your choice[0-2]: ")
         
         if choice == "1":
-            line = menu.getline_input()
-            body_dict["data"][f"msg.mwi.{line}.led"] = "1"
+            # Calls setConfig using body_dict
+            body_dict["data"]["device.set"] = "1"
+            body_dict["data"]["device.font.size"] = "Normal"
+            body_dict["data"]["device.font.size.set"] = "1"
             print(dev.setConfig(body_dict))
+<<<<<<< Updated upstream
             print("Device is restarting, pausing for 30sec...")
+=======
+            print("Device is rebooting, pausing for 30sec...")
+>>>>>>> Stashed changes
             time.sleep(30)
             #input("Press Enter to continue...")
             return
         elif choice == "2":
-            line = menu.getline_input()
-            body_dict["data"][f"msg.mwi.{line}.led"] = "0"
+            # Calls setConfig using body_dict
+            body_dict["data"]["device.set"] = "1"
+            body_dict["data"]["device.font.size"] = "Large"
+            body_dict["data"]["device.font.size.set"] = "1"
             print(dev.setConfig(body_dict))
+<<<<<<< Updated upstream
             print("Device is restarting, pausing for 30sec...")
+=======
+            print("Device is rebooting, pausing for 30sec...")
+>>>>>>> Stashed changes
             time.sleep(30)
             #input("Press Enter to continue...")
             return              
@@ -347,12 +372,17 @@ def messagewaitingindicator_submenu(dev, line=1):
             print(f"Invalid input '{choice}' >> Expecting [0-2].")
             time.sleep(1)
             menu.clear()
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+            
 >>>>>>> Stashed changes
 
 
 # In[ ]:
 
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 def messagewaitingindicator_submenu(dev, line=1):
    
@@ -367,6 +397,84 @@ def pagination_submenu(dev):
     body_dict = { "data" : {} }
     loop = True
 
+=======
+def headsetconfiguration_submenu(dev):
+   
+    menu.clear()
+    query_dict = { "data" : ["usb.headset.config.enabled"] }
+    body_dict = { "data" : {} }
+    loop = True
+
+    if not dev._swVer:
+        print(f"This firmware {dev.firmware} doesn't support this setting. Supported versions are {dev._valid_versions}")
+        input("Press Enter to continue...")
+        return
+    
+>>>>>>> Stashed changes
+    while loop:
+
+        print("Current Value:")
+        print("==============")
+        for i in range (dev.linescount):
+            query_dict = { "data" : [f"msg.mwi.{i+1}.led"] }
+            menu.display_dict(dev.getConfig(query_dict)["data"])
+        print("***NOTE: Changing this value will cause device to restart!***")
+        print("")
+<<<<<<< Updated upstream
+        print("1. Enable Message Waiting Indicator(LED)")
+        print("2. Disable Message Waiting Indicator(LED)")
+=======
+        print("1. Enable Headset Configuration Menu")
+        print("2. Disable Headset Configuration Menu")
+>>>>>>> Stashed changes
+        print("0. Exit")
+        choice = input("Enter your choice[0-2]: ")
+        
+        if choice == "1":
+<<<<<<< Updated upstream
+            line = menu.getline_input()
+            body_dict["data"][f"msg.mwi.{line}.led"] = "1"
+=======
+            # Calls setConfig using body_dict
+            body_dict["data"]["usb.headset.config.enabled"] = "1"
+>>>>>>> Stashed changes
+            print(dev.setConfig(body_dict))
+            print("Device is restarting, pausing for 30sec...")
+            time.sleep(30)
+            #input("Press Enter to continue...")
+            return
+        elif choice == "2":
+<<<<<<< Updated upstream
+            line = menu.getline_input()
+            body_dict["data"][f"msg.mwi.{line}.led"] = "0"
+=======
+            # Calls setConfig using body_dict
+            body_dict["data"]["usb.headset.config.enabled"] = "0"
+>>>>>>> Stashed changes
+            print(dev.setConfig(body_dict))
+            print("Device is restarting, pausing for 30sec...")
+            time.sleep(30)
+            #input("Press Enter to continue...")
+            return              
+        elif choice == "0":
+            # Exit menu
+            loop = False
+        else:
+            print(f"Invalid input '{choice}' >> Expecting [0-2].")
+            time.sleep(1)
+            menu.clear()
+            
+
+
+# In[ ]:
+
+
+def messagewaitingindicator_submenu(dev, line=1):
+   
+    menu.clear()
+    body_dict = { "data" : {} }
+    loop = True
+
     while loop:
 
         print("Current Value:")
@@ -427,6 +535,7 @@ def pagination_submenu(dev):
         input("Press Enter to continue...")
         return
     
+<<<<<<< Updated upstream
     if dev.model in invalid_models:
         print(f"This device {dev.model} doesn't support this setting. Unsupported models are {invalid_models}")
         input("Press Enter to continue...")
@@ -437,6 +546,8 @@ def pagination_submenu(dev):
         input("Press Enter to continue...")
         return
     
+=======
+>>>>>>> Stashed changes
     while loop:
 
         print("Current Value:")
@@ -645,7 +756,10 @@ def sipdebugusblogging_submenu(dev):
             body_dict["data"]["log.level.change.sip"] = "4"
             body_dict["data"]["feature.usbLogging.enabled"] = "0"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
             print(dev.setConfig(body_dict))
             input("Press Enter to continue...")
             return              
@@ -740,6 +854,7 @@ def networklldp_submenu(dev):
             body_dict["data"]["device.set"] = "1"
             body_dict["data"]["device.net.lldpEnabled"] = "0"
             body_dict["data"]["device.net.lldpEnabled.set"] = "0"
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
             print(dev.setConfig(body_dict))
             input("Press Enter to continue...")
@@ -895,6 +1010,8 @@ def networklldp_submenu(dev):
             body_dict["data"]["device.set"] = "1"
             body_dict["data"]["device.net.lldpEnabled"] = "0"
             body_dict["data"]["device.net.lldpEnabled.set"] = "0"
+=======
+>>>>>>> Stashed changes
             print(dev.setConfig(body_dict))
             input("Press Enter to continue...")
             return              

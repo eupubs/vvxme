@@ -140,7 +140,10 @@ class vvx():
        .callDial() - "/api/v1/callctrl/dial"
        .callEnd() - "/api/v1/callctrl/endCall"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
        .callMute() - "/api/v1/callctrl/mute"
        .sendDTMF() - "/api/v1/callctrl/sendDTMF"
        .callAnswer() - "/api/v1/callctrl/answerCall"
@@ -148,6 +151,9 @@ class vvx():
        .callReject() - "/api/v1/callctrl/rejectCall"
        .callHold() - "/api/v1/callctrl/holdCall"
        .callResume() - "/api/v1/callctrl/resumeCall"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
        .simulateKeyEvent() - calls "/api/v1/mgmt/simulateKeyEvent"
        .simulateTextInput() - calls "/api/v1/mgmt/simulateTextInput"
@@ -161,7 +167,10 @@ class vvx():
     
     _qpaths_dict={
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             "sipStatus" : "/api/v1/webCallControl/sipStatus",
@@ -203,6 +212,7 @@ class vvx():
     }
     
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
     _pdmssp_baseurl="https://pcs-api-na.obitalk.com"
     _access_token_path = "/api/v2/oauth/client_credential/accesstoken"
@@ -211,6 +221,14 @@ class vvx():
 >>>>>>> Stashed changes
     _valid_versions = ("6.0.0", "6.1.0",)
     
+=======
+    _pdmssp_baseurl="https://pcs-api-na.obitalk.com"
+    _access_token_path = "/api/v2/oauth/client_credential/accesstoken"
+    _domain_path = "/api/v2/domain/"
+    
+    _valid_versions = ("6.0.0", "6.1.0",)
+    
+>>>>>>> Stashed changes
     def __init__(self, ipaddr="", phone_credentials=(), use_https=True, verify_secure=False, 
                                          pdmssp=False, pdmssp_credentials={}, macaddr="", loglevel="INFO"):
         
@@ -223,6 +241,7 @@ class vvx():
         vvx_adapter = requests.adapters.HTTPAdapter(max_retries=3)
         self.__session = requests.Session()
         
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         if self.use_https:
             self.__session.mount(f"https://{self.ipaddr}", vvx_adapter)
@@ -242,10 +261,79 @@ class vvx():
                 else:
                     self._swVer = None
         else:
+=======
+        if not pdmssp:
+            # direct phone query scenario
+            
+            self.ipaddr = ipaddr
+            self.phone_credentials = phone_credentials
+            self.use_https = use_https
+            self.verify_secure = verify_secure
+            
+            self.macaddress = macaddr
+>>>>>>> Stashed changes
             self.model = None
             self.firmware = None
-            self.macaddress = None            
+            self._swVer = None
+            self.lines = {}
+            self.linestates = {}
+            self.linescount = None
+
+            if self.use_https:
+                # apply HTTPAdapter settings to url
+                self.__session.mount(f"https://{self.ipaddr}", vvx_adapter)
+            else:
+                # apply HTTPAdapter settings to url
+                self.__session.mount(f"http://{self.ipaddr}", vvx_adapter)
+
+            try:
+                # Extracts attributes' values for model, firmware, macaddress and _swVer
+                dev = self.getDeviceInfoV2()
+                if dev:
+                    self.model = dev["data"]["ModelNumber"]
+                    self.firmware = dev["data"]["Firmware"]["Application"]
+                    self.macaddress = dev["data"]["MACAddress"]
+
+                    for item in self._valid_versions:
+                        if self.firmware.startswith(item):
+                            self._swVer = item
+
+                # *** setConfig/getConfig not working on PDMSSP, skipping altogther ***                
+                # Extracts attribute's value for baseprofile
+                #dev = self.getConfig({ "data" : [ "device.baseProfile" ] })
+                #if dev != None:
+                #    self.baseprofile = dev["data"]["device.baseProfile"]["Value"]
+                #else:
+                #    self.baseprofile = None
+
+                # Extracts information about lines, count and state.
+                dev = self.getLineInfoV2()
+                if dev:
+                    self.linescount = len(dev["data"])
+                    for i in range(self.linescount):
+                        if dev["data"][i]["CallServers"]:
+                            p = i
+                            self.lines[i+1] = dev["data"][i]["Label"]
+                            self.linestates[dev["data"][i]["Label"]] = dev["data"][i]["RegistrationStatus"]
+                        else:
+                            self.lines[i+1] = dev["data"][p]["Label"]
+                            self.linestates[dev["data"][p]["Label"]] = dev["data"][i]["RegistrationStatus"]
+
+            except Exception:
+                pass
+                            
+            logging.debug(f"Device ip-address: {self.ipaddr}")
+            logging.debug(f"Device model: {self.model}")
+            logging.debug(f"Device firmware: {self.firmware}")
+            logging.debug(f"Device mac address: {self.macaddress}")
+            # *** setConfig/getConfig not working on PDMSSP***
+            #logging.debug(f"Device base profile: {self.baseprofile}")
+            logging.debug(f"Device lines: {self.lines}")
+            logging.debug(f"Device lines count: {self.linescount}")
+            logging.debug(f"Device lines states: {self.linestates}")
+
         
+<<<<<<< Updated upstream
         # Extracts attribute's value for baseprofile
         dev = self.getConfig({ "data" : [ "device.baseProfile" ] })
         if dev != None:
@@ -385,6 +473,89 @@ class vvx():
                     logging.debug(f"Device lines: {self.lines}")
                     logging.debug(f"Device lines count: {self.linescount}")
                     logging.debug(f"Device lines states: {self.linestates}")
+=======
+        elif pdmssp:            
+            # pdmssp query scenario
+        
+            self.ipaddr = ipaddr
+            self.phone_credentials = phone_credentials
+            self.use_https = use_https
+            self.verify_secure = verify_secure
+            
+            self.macaddress = macaddr
+            self.model = None
+            self.firmware = None
+            self._swVer = None
+            self.lines = {}
+            self.linestates = {}
+            self.linescount = None
+
+            self.token = None
+            self.device_id = None
+            self.obi_number = None
+            self.client_id = pdmssp_credentials["client_id"]
+            self.client_secret = pdmssp_credentials["client_secret"]
+            self.org_id = pdmssp_credentials["org_id"]
+
+            # apply HTTPAdapter settings to url
+            self.__session.mount(self._pdmssp_baseurl, vvx_adapter)
+            
+            try:
+                # get access_token from pdmssp using Org's client_id & client_secret.
+                dev = self.pdmssp_getToken()
+                if dev:
+                    self.token = dev["access_token"]
+
+                    # get device_id from pdmssp using access_token, org_id & macaddr
+                    dev = self.pdmssp_getDeviceId()
+                    if dev["data"]:
+                        self.device_id = dev["data"][0]["id"]
+                        self.obi_number = dev["data"][0]["obiNumber"]
+
+                        dev = self.getDeviceInfoV2(True)
+                        if dev["data"]:
+                            self.model = dev["data"]["body"]["data"]["ModelNumber"]
+                            self.firmware = dev["data"]["body"]["data"]["Firmware"]["Application"]
+
+                            for item in self._valid_versions:
+                                if self.firmware.startswith(item):
+                                    self._swVer = item
+
+                        # *** setConfig/getConfig not working on PDMSSP, skipping altogther ***
+                        # Extracts attribute's value for baseprofile
+                        #dev = self.getConfig({ "data" : [ "device.baseProfile" ] }, True)
+                        #if dev != None:
+                        #    self.baseprofile = dev["data"]["device.baseProfile"]["Value"]
+                        #else:
+                        #    self.baseprofile = None
+
+                        # Extracts information about lines, count and state.
+                        dev = self.getLineInfoV2(True)
+                        if dev["data"]:
+                            self.linescount = len(dev["data"]["body"]["data"])
+                            for i in range(self.linescount):
+                                if dev["data"]["body"]["data"][i]["CallServers"]:
+                                    p = i
+                                    self.lines[i+1] = dev["data"]["body"]["data"][i]["Label"]
+                                    self.linestates[dev["data"]["body"]["data"][i]["Label"]] = dev["data"]["body"]["data"][i]["RegistrationStatus"]
+                                else:
+                                    self.lines[i+1] = dev["data"]["body"]["data"][p]["Label"]
+                                    self.linestates[dev["data"]["body"]["data"][p]["Label"]] = dev["data"]["body"]["data"][i]["RegistrationStatus"]
+            
+            except Exception:
+                pass
+            
+            logging.debug(f"Device id of device on PDMS-SP: {self.device_id}")
+            logging.debug(f"Device obi-number of device on PDMS-SP: {self.obi_number}")
+            logging.debug(f"Device model on PDMS-SP: {self.model}")
+            logging.debug(f"Device firmware on PDMS-SP: {self.firmware}")
+            logging.debug(f"Device mac address on PDMS-SP: {self.macaddress}")
+            # *** setConfig/getConfig not working on PDMSSP***
+            #logging.debug(f"Device base profile: {self.baseprofile}")
+            logging.debug(f"Device lines: {self.lines}")
+            logging.debug(f"Device lines count: {self.linescount}")
+            logging.debug(f"Device lines states: {self.linestates}")
+>>>>>>> Stashed changes
 
         
     def __httpRequest(self, qpath="", rtype="GET", params={}, headers={}, rdata={}, pdmssp=False, pdmssp_url=""):
@@ -398,16 +569,22 @@ class vvx():
         s = self.__session
                
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         if self.use_https:
             target_url = f"https://{self.ipaddr}{self._qpaths_dict[qpath]}"
         else:
             target_url = f"http://{self.ipaddr}{self._qpaths_dict[qpath]}"
 =======
+=======
+>>>>>>> Stashed changes
         if not pdmssp:  
             if self.use_https:
                 target_url = f"https://{self.ipaddr}{self._qpaths_dict[qpath]}"
             else:
                 target_url = f"http://{self.ipaddr}{self._qpaths_dict[qpath]}"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         
         
@@ -419,12 +596,15 @@ class vvx():
                     r.raise_for_status()
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             elif rtype == "POST":
                 headers = { "Content-Type" : ctype }
                 r = s.post(url=target_url, data=json.dumps(rdata), headers=headers, 
                                   auth=self.auth_credentials, verify=self.verify_secure, timeout=(3, 3))
                 r.raise_for_status()
 =======
+=======
+>>>>>>> Stashed changes
                 elif rtype == "POST":
                     r = s.post(url=target_url, params=params, headers=headers, data=json.dumps(rdata),
                                    auth=self.phone_credentials, verify=self.verify_secure, timeout=(3, 3))
@@ -453,6 +633,7 @@ class vvx():
                 logging.info(f"Response <<-- <{r.status_code}>")
                 logging.debug(f"Response <<-- {r.text}")
                 
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
                 return r
 
@@ -463,6 +644,13 @@ class vvx():
 =======
             time.sleep(2)
 >>>>>>> Stashed changes
+=======
+                return r
+
+        except requests.exceptions.HTTPError as http_err:
+            logging.error(f"HTTP Error: <{http_err}>")
+            time.sleep(2)
+>>>>>>> Stashed changes
         except requests.exceptions.ConnectionError as connect_err:
             logging.error(f"Connection Error: <{connect_err}>")
         except requests.exceptions.Timeout as timeout_err:
@@ -470,7 +658,11 @@ class vvx():
         except requests.exceptions.RequestException as err:
             logging.error(f"Request Error: <{err}>")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             time.sleep(3)
+=======
+            time.sleep(2)
+>>>>>>> Stashed changes
 =======
             time.sleep(2)
 >>>>>>> Stashed changes
@@ -501,6 +693,7 @@ class vvx():
         pdmssp_headers["Content-Length"] = "0"
 
         dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, headers=pdmssp_headers)
+<<<<<<< Updated upstream
         if dev != None:
             return dev.json()
        
@@ -624,6 +817,461 @@ class vvx():
                 return dev.json()
 
 
+    def getCallStatusV2(self, pdmssp=False):
+        """
+        Method calls ucs api, GET "callstatusv2" : "/api/v2/webCallControl/callStatus", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp: 
+            dev = self.__httpRequest(qpath="callstatusv2")
+            if dev != None:
+                return dev.json()
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "GET"
+            pdmssp_body["apiurl"] = self._qpaths_dict["callstatusv2"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)
+            if dev != None:
+                return dev.json()
+
+
+    def getRunningConfig(self, pdmssp=False):
+        """
+        Method calls ucs api, GET "runningConfig" : "/api/v1/mgmt/device/runningConfig", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp: 
+            dev = self.__httpRequest(qpath="runningConfig")
+=======
+        if dev != None:
+            return dev.json()
+       
+
+    def pdmssp_getDeviceId(self):
+        """
+        Method calls pdmssp api, "/api/v2/domain/{org_id}/devices", to retrieve device info such as device_id, obi_number, etc.
+        INPUTS: None
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        pdmssp_url = ""
+        pdmssp_headers = {}
+        pdmssp_params = {}
+        
+        resource_path = self._domain_path + self.org_id + "/devices" 
+        pdmssp_url = self._pdmssp_baseurl + resource_path
+
+        pdmssp_params["macAddress"] = self.macaddress
+
+        pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+        pdmssp_headers["Content-Type"] = "application/json"
+        pdmssp_headers["Content-Length"] = "0"
+        
+        dev = self.__httpRequest(rtype="GET", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, headers=pdmssp_headers)
+        if dev != None:
+            return dev.json()
+ 
+
+    def getDeviceInfoV2(self, pdmssp=False):
+        """
+        Method calls ucs api, GET "deviceinfov2" : "/api/v2/mgmt/device/info", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:
+            #logging.debug("getDeviceInfoV2 Method <GET>")
+            dev = self.__httpRequest(qpath="deviceinfov2")
+>>>>>>> Stashed changes
+            if dev != None:
+                return dev.json()
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+<<<<<<< Updated upstream
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "GET"
+            pdmssp_body["apiurl"] = self._qpaths_dict["runningConfig"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)
+            if dev != None:
+                return dev.json()
+           
+
+    def getDeviceStats(self, pdmssp=False):
+        """
+        Method calls ucs api, GET "devicestats" : "/api/v1/mgmt/device/stats", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:       
+            dev = self.__httpRequest(qpath="devicestats")
+            if dev != None:
+                return dev.json()
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "GET"
+            pdmssp_body["apiurl"] = self._qpaths_dict["devicestats"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)
+            if dev != None:
+                return dev.json()
+
+
+    def getNetworkStats(self, pdmssp=False):
+        """
+        Method calls ucs api, GET "networkstats" : "/api/v1/mgmt/network/stats", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:    
+            dev = self.__httpRequest(qpath="networkstats")
+            if dev != None:
+                return dev.json()
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "GET"
+            pdmssp_body["apiurl"] = self._qpaths_dict["networkstats"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)
+            if dev != None:
+                return dev.json()
+          
+
+    def getSessionStats(self, pdmssp=False):
+        """
+        Method calls ucs api, GET "sessionStats" : "/api/v1/mgmt/media/sessionStats", either to phone or pdmssp, determined by pdmssp
+=======
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "GET"
+            pdmssp_body["apiurl"] = self._qpaths_dict["deviceinfov2"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)
+            if dev != None:
+                return dev.json()
+            
+            
+    def getNetwork(self, pdmssp=False):
+        """
+        Method calls ucs api, GET "network" : "/api/v1/mgmt/network/info", either to phone or pdmssp, determined by pdmssp
+>>>>>>> Stashed changes
+        INPUTS: pdmssp as boolean
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:
+<<<<<<< Updated upstream
+            dev = self.__httpRequest(qpath="sessionStats")
+=======
+            #logging.debug("getNetwork Method <GET>")
+            dev = self.__httpRequest(qpath="network")
+>>>>>>> Stashed changes
+            if dev != None:
+                return dev.json()
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "GET"
+<<<<<<< Updated upstream
+            pdmssp_body["apiurl"] = self._qpaths_dict["sessionStats"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)           
+            if dev != None:
+                return dev.json()
+
+
+    def getCallLogs(self, logtype="all", pdmssp=False):
+        """
+        Method calls ucs api, GET "callLogs" : "/api/v1/mgmt/callLogs", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean,
+                logtype as str. Valid strings are "all", "missed", "received", "placed".
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:    
+            if logtype == "missed":
+                dev = self.__httpRequest(qpath="callLogs_missed")
+            elif logtype == "received":
+                dev = self.__httpRequest(qpath="callLogs_received")
+            elif logtype == "placed":
+                dev = self.__httpRequest(qpath="callLogs_placed")
+            elif logtype == "all":
+                dev = self.__httpRequest(qpath="callLogs")
+            else:
+                return logging.error(f"<Invalid input [logtype]: '{logtype}'>")
+
+            if dev != None:
+                return dev.json()        
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "GET"
+            
+            if logtype == "missed":
+                pdmssp_body["apiurl"] = self._qpaths_dict["callLogs_missed"][4:]
+            elif logtype == "received":
+                pdmssp_body["apiurl"] = self._qpaths_dict["callLogs_received"][4:]
+            elif logtype == "placed":
+                pdmssp_body["apiurl"] = self._qpaths_dict["callLogs_placed"][4:]
+            elif logtype == "all":
+                pdmssp_body["apiurl"] = self._qpaths_dict["callLogs"][4:]
+            else:
+                return logging.error(f"<Invalid input [logtype]: '{logtype}'>")
+=======
+            pdmssp_body["apiurl"] = self._qpaths_dict["network"][4:]
+>>>>>>> Stashed changes
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)
+            if dev != None:
+<<<<<<< Updated upstream
+                return dev.json()        
+            
+
+    def safeRestart(self, pdmssp=False):
+        """
+        Method calls ucs api, POST "safeRestart" : "/api/v1/mgmt/safeRestart", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean,
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:
+            headers = {}
+            headers["Content-Type"] = "application/json"
+            
+            dev = self.__httpRequest(qpath="safeRestart", rtype="POST", headers=headers)
+            if dev != None:
+                return dev.json()
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "POST"
+            pdmssp_body["apiurl"] = self._qpaths_dict["safeRestart"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)           
+            if dev != None:
+                return dev.json()
+            
+ 
+    def safeReboot(self, pdmssp=False):
+        """
+<<<<<<< Updated upstream
+        dev = self.__httpRequest("sessionStats")
+        if dev != None:
+            return dev.json()
+=======
+                return dev.json()
+            
+
+    def getLineInfoV2(self, pdmssp=False):
+        """
+        Method calls ucs api, GET "lineinfov2" : "/api/v2/mgmt/lineInfo", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:
+            dev = self.__httpRequest(qpath="lineinfov2")
+            if dev != None:
+                return dev.json()
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "GET"
+            pdmssp_body["apiurl"] = self._qpaths_dict["lineinfov2"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)
+            if dev != None:
+                return dev.json()
+>>>>>>> Stashed changes
+
+    def getCallLogs(self, logtype="all"):
+        """
+        Method calls internal httpRequest to GET "callLogs" : "/api/v1/mgmt/callLogs".
+        INPUTS: logtype as str. Valid strings are "all", "missed", "received", "placed".
+        OUTPUT: Returns response body as dict.
+        """        
+        if logtype == "missed":
+            dev = self.__httpRequest("callLogs_missed")
+        elif logtype == "received":
+            dev = self.__httpRequest("callLogs_received")
+        elif logtype == "placed":
+            dev = self.__httpRequest("callLogs_placed")
+        elif logtype == "all":
+            dev = self.__httpRequest("callLogs")
+        else:
+            return logging.error(f"<Invalid input [logtype]: '{logtype}'>")
+            
+        if dev != None:
+            return dev.json()        
+
+<<<<<<< Updated upstream
+        
+    def safeRestart(self):
+        """
+        Method calls internal httpRequest to POST "safeRestart" : "/api/v1/mgmt/safeRestart".
+        INPUTS: none
+        OUTPUT: Returns response body as dict.
+        """
+        dev = self.__httpRequest(qpath="safeRestart", rtype="POST")
+        if dev != None:
+            return dev.json()
+
+        
+    def safeReboot(self):
+        """
+        Method calls internal httpRequest to POST "safeReboot" : "/api/v1/mgmt/safeReboot".
+        INPUTS: none
+        OUTPUT: Returns response body as dict.
+        """
+        dev = self.__httpRequest(qpath="safeReboot", rtype="POST")
+        if dev != None:
+            return dev.json()
+
+        
+    def factoryReset(self):
+        """
+        Method calls internal httpRequest to POST "factoryReset" : "/api/v1/mgmt/factoryReset".
+        INPUTS: none
+        OUTPUT: Returns response body as dict.
+        """
+        dev = self.__httpRequest(qpath="factoryReset", rtype="POST")
+        if dev != None:
+            return dev.json()
+
+
+    def updateConfig(self):
+        """
+        Method calls internal httpRequest to POST "updateConfig" : "/api/v1/mgmt/updateConfiguration".
+        INPUTS: none
+        OUTPUT: Returns response body as dict.
+        """
+        dev = self.__httpRequest(qpath="updateConfig", rtype="POST")
+        if dev != None:
+            return dev.json()
+
+    
+    def resetConfig(self, configtype="all"):
+        """
+        Method calls internal httpRequest to POST "resetConfig" : "/api/v1/mgmt/configReset".
+        INPUTS: configtype as str. Valid strings are "all", "cloud", "local", "web", "device".
+        OUTPUT: Returns response body as dict.
+        """        
+        if configtype == "cloud":
+            dev = self.__httpRequest(qpath="resetConfig_cloud", rtype="POST")
+        elif configtype == "local":
+            dev = self.__httpRequest(qpath="resetConfig_local", rtype="POST")
+        elif configtype == "web":
+            dev = self.__httpRequest(qpath="resetConfig_web", rtype="POST")
+        elif configtype == "device":
+            dev = self.__httpRequest(qpath="resetConfig_device", rtype="POST")
+        elif configtype == "all":
+            dev = self.__httpRequest(qpath="resetConfig", rtype="POST")
+        else:
+            return logging.error(f"<Invalid input [configtype]: '{configtype}'>")
+            
+        if dev != None:
+            return dev.json()        
+    
+=======
+        Method calls ucs api, POST "safeReboot" : "/api/v1/mgmt/safeReboot", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean,
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:   
+            headers = {}
+            headers["Content-Type"] = "application/json"
+            
+            dev = self.__httpRequest(qpath="safeReboot", rtype="POST", headers=headers)
+            if dev != None:
+                return dev.json()
+        
+=======
     def getCallStatusV2(self, pdmssp=False):
         """
         Method calls ucs api, GET "callstatusv2" : "/api/v2/webCallControl/callStatus", either to phone or pdmssp, determined by pdmssp
@@ -867,99 +1515,6 @@ class vvx():
  
     def safeReboot(self, pdmssp=False):
         """
-<<<<<<< Updated upstream
-        dev = self.__httpRequest("sessionStats")
-        if dev != None:
-            return dev.json()
-
-    def getCallLogs(self, logtype="all"):
-        """
-        Method calls internal httpRequest to GET "callLogs" : "/api/v1/mgmt/callLogs".
-        INPUTS: logtype as str. Valid strings are "all", "missed", "received", "placed".
-        OUTPUT: Returns response body as dict.
-        """        
-        if logtype == "missed":
-            dev = self.__httpRequest("callLogs_missed")
-        elif logtype == "received":
-            dev = self.__httpRequest("callLogs_received")
-        elif logtype == "placed":
-            dev = self.__httpRequest("callLogs_placed")
-        elif logtype == "all":
-            dev = self.__httpRequest("callLogs")
-        else:
-            return logging.error(f"<Invalid input [logtype]: '{logtype}'>")
-            
-        if dev != None:
-            return dev.json()        
-
-        
-    def safeRestart(self):
-        """
-        Method calls internal httpRequest to POST "safeRestart" : "/api/v1/mgmt/safeRestart".
-        INPUTS: none
-        OUTPUT: Returns response body as dict.
-        """
-        dev = self.__httpRequest(qpath="safeRestart", rtype="POST")
-        if dev != None:
-            return dev.json()
-
-        
-    def safeReboot(self):
-        """
-        Method calls internal httpRequest to POST "safeReboot" : "/api/v1/mgmt/safeReboot".
-        INPUTS: none
-        OUTPUT: Returns response body as dict.
-        """
-        dev = self.__httpRequest(qpath="safeReboot", rtype="POST")
-        if dev != None:
-            return dev.json()
-
-        
-    def factoryReset(self):
-        """
-        Method calls internal httpRequest to POST "factoryReset" : "/api/v1/mgmt/factoryReset".
-        INPUTS: none
-        OUTPUT: Returns response body as dict.
-        """
-        dev = self.__httpRequest(qpath="factoryReset", rtype="POST")
-        if dev != None:
-            return dev.json()
-
-
-    def updateConfig(self):
-        """
-        Method calls internal httpRequest to POST "updateConfig" : "/api/v1/mgmt/updateConfiguration".
-        INPUTS: none
-        OUTPUT: Returns response body as dict.
-        """
-        dev = self.__httpRequest(qpath="updateConfig", rtype="POST")
-        if dev != None:
-            return dev.json()
-
-    
-    def resetConfig(self, configtype="all"):
-        """
-        Method calls internal httpRequest to POST "resetConfig" : "/api/v1/mgmt/configReset".
-        INPUTS: configtype as str. Valid strings are "all", "cloud", "local", "web", "device".
-        OUTPUT: Returns response body as dict.
-        """        
-        if configtype == "cloud":
-            dev = self.__httpRequest(qpath="resetConfig_cloud", rtype="POST")
-        elif configtype == "local":
-            dev = self.__httpRequest(qpath="resetConfig_local", rtype="POST")
-        elif configtype == "web":
-            dev = self.__httpRequest(qpath="resetConfig_web", rtype="POST")
-        elif configtype == "device":
-            dev = self.__httpRequest(qpath="resetConfig_device", rtype="POST")
-        elif configtype == "all":
-            dev = self.__httpRequest(qpath="resetConfig", rtype="POST")
-        else:
-            return logging.error(f"<Invalid input [configtype]: '{configtype}'>")
-            
-        if dev != None:
-            return dev.json()        
-    
-=======
         Method calls ucs api, POST "safeReboot" : "/api/v1/mgmt/safeReboot", either to phone or pdmssp, determined by pdmssp
         INPUTS: pdmssp as boolean,
         OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
@@ -976,6 +1531,175 @@ class vvx():
             pdmssp_headers = {}
             pdmssp_body = {}
             pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "POST"
+            pdmssp_body["apiurl"] = self._qpaths_dict["safeReboot"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)           
+            if dev != None:
+                return dev.json()
+
+ 
+    def factoryReset(self, pdmssp=False):
+        """
+        Method calls ucs api, POST "factoryReset" : "/api/v1/mgmt/factoryReset", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean,
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:   
+            headers = {}
+            headers["Content-Type"] = "application/json"
+            
+            dev = self.__httpRequest(qpath="factoryReset", rtype="POST", headers=headers)
+            if dev != None:
+                return dev.json()
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "POST"
+            pdmssp_body["apiurl"] = self._qpaths_dict["factoryReset"][4:]
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)           
+            if dev != None:
+                return dev.json()
+
+            
+    def updateConfig(self, pdmssp=False):
+        """
+        Method calls ucs api, POST "updateConfig" : "/api/v1/mgmt/updateConfiguration", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean,
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        if not pdmssp:
+            headers = {}
+            headers["Content-Type"] = "application/json"
+            
+            dev = self.__httpRequest(qpath="updateConfig", rtype="POST", headers=headers)
+            if dev != None:
+                return dev.json()
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "POST"
+            pdmssp_body["apiurl"] = self._qpaths_dict["updateConfig"][4:]
+
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)           
+            if dev != None:
+                return dev.json()
+            
+            
+    def resetConfig(self, configtype="all", pdmssp=False):
+        """
+        Method calls ucs api, POST "resetConfig" : "/api/v1/mgmt/configReset", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean,
+                configtype as str. Valid strings are "cloud", "local", "web", "device", "all".
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        
+        if not pdmssp:
+            headers = {}
+            headers["Content-Type"] = "application/json"
+            
+            if configtype == "cloud":
+                dev = self.__httpRequest(qpath="resetConfig_cloud", rtype="POST", headers=headers)
+            elif configtype == "local":
+                dev = self.__httpRequest(qpath="resetConfig_local", rtype="POST", headers=headers)
+            elif configtype == "web":
+                dev = self.__httpRequest(qpath="resetConfig_web", rtype="POST", headers=headers)
+            elif configtype == "device":
+                dev = self.__httpRequest(qpath="resetConfig_device", rtype="POST", headers=headers)
+            elif configtype == "all":
+                dev = self.__httpRequest(qpath="resetConfig", rtype="POST", headers=headers)
+            else:
+                return logging.error(f"<Invalid input [configtype]: '{configtype}'>")
+            
+            if dev != None:
+                return dev.json()        
+        
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+            
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+            
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+            
+            pdmssp_body["method"] = "POST"
+            
+            if configtype == "cloud":
+                pdmssp_body["apiurl"] = self._qpaths_dict["resetConfig_cloud"][4:]
+            elif configtype == "local":
+                pdmssp_body["apiurl"] = self._qpaths_dict["resetConfig_local"][4:]
+            elif configtype == "web":
+                pdmssp_body["apiurl"] = self._qpaths_dict["resetConfig_web"][4:]
+            elif configtype == "device":
+                pdmssp_body["apiurl"] = self._qpaths_dict["resetConfig_device"][4:]
+            elif configtype == "all":
+                pdmssp_body["apiurl"] = self._qpaths_dict["resetConfig"][4:]
+            else:
+                return logging.error(f"<Invalid input [configtype]: '{configtype}'>")
+            
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)   
+            if dev != None:
+                return dev.json()
+ 
+
+    def getConfig(self, rdata, pdmssp=False):
+        """
+        Method calls ucs api, POST "getconfig" : "/api/v1/mgmt/config/get", either to phone or pdmssp, determined by pdmssp
+        INPUTS: pdmssp as boolean, rdata as dict(body)
+        OUTPUT: Returns response body as dict when api call is successful, None when unsuccessful.
+        """     
+        
+        res = validate_getConfig_body(rdata)
+        if not res:
+            return
+            
+        if not pdmssp:
+            headers = {}
+            headers["Content-Type"] = "application/json"
+            
+            dev = self.__httpRequest(qpath="getconfig", rtype="POST", headers=headers, rdata=rdata)
+            if dev != None:
+                return dev.json()
+
+>>>>>>> Stashed changes
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+<<<<<<< Updated upstream
             
             resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
             pdmssp_url = self._pdmssp_baseurl + resource_path
@@ -1209,6 +1933,73 @@ class vvx():
                                      headers=pdmssp_headers, rdata=pdmssp_body)
 
             if dev != None:
+=======
+
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+
+            pdmssp_body["method"] = "POST"
+            pdmssp_body["apiurl"] = self._qpaths_dict["getconfig"][4:]
+            pdmssp_body["body"] = rdata
+
+            dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body) 
+            if dev != None:
+                return dev.json()
+
+                
+    def setConfig(self, rdata, chunk_size=20, pdmssp=False):
+        """
+        Method calls ucs api, POST "setconfig" : "/api/v1/mgmt/config/set", either to phone or pdmssp, determined by pdmssp
+        *Note: setConfig API has limit of 20 parameters in each request. This method will break body and send requests
+            in chunk size.
+        INPUTS: pdmssp as boolean, rdata as dict(body)
+        OUTPUT: Returns response body as list when api call is successful, None when unsuccessful.
+        """     
+        
+        res = validate_setConfig_body(rdata)
+        if not res:
+            return
+            
+        response = []   
+        chunk_dict = {}
+        body_dict = {}
+
+        params = rdata["data"]
+        params_count = len(params)
+
+        if not pdmssp:
+            headers = {}
+            headers["Content-Type"] = "application/json"
+
+        elif pdmssp:
+            pdmssp_headers = {}
+            pdmssp_body = {}
+            pdmssp_params = {}
+
+            resource_path = self._domain_path + self.org_id + "/devices/" + self.device_id + "/ucsapi"
+            pdmssp_url = self._pdmssp_baseurl + resource_path
+
+            pdmssp_headers["Authorization"] = f"Bearer {self.token}"
+            pdmssp_headers["Content-Type"] = "application/json"
+
+            pdmssp_body["method"] = "POST"
+            pdmssp_body["apiurl"] = self._qpaths_dict["setconfig"][4:]
+            pdmssp_body["body"] = rdata
+
+        if params_count <= chunk_size:
+            # parameters count is 20 or less, make http request directly
+            if not pdmssp:
+                dev = self.__httpRequest(qpath="setconfig", rtype="POST", headers=headers, rdata=rdata)
+            elif pdmssp:
+                dev = self.__httpRequest(rtype="POST", pdmssp=True, pdmssp_url=pdmssp_url, params=pdmssp_params, 
+                                     headers=pdmssp_headers, rdata=pdmssp_body)
+
+            if dev != None:
+>>>>>>> Stashed changes
                 response.append(dev.json())
 
         else:
@@ -1252,13 +2043,19 @@ class vvx():
                     response.append(dev.json())
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
     def callDial(self, dest, line=1, linetype="Tel", duration=10, ctype="application/json"):
 =======
+=======
+>>>>>>> Stashed changes
         return response
                 
  
     def callDial(self, dest, line=1, linetype="Tel", duration=10, pdmssp=False):
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         """
         Method calls ucs api, POST "calldial" : "/api/v1/callctrl/dial", either to phone or pdmssp, determined by pdmssp
@@ -1270,7 +2067,10 @@ class vvx():
                 duration as int (in seconds - defaults to 10S,when value is 1s or more (on line1 only), 
                 method will track duration and auto-disconnect after duration lapsed.), 0s means no auto-disconnect.
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             ctype as string(Content-Type).
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         OUTPUT: Returns response body as dict when successful, None when unsuccessful.
@@ -1319,6 +2119,7 @@ class vvx():
                 else:
                     # proceed with call dial
                     dev = self.__httpRequest(qpath="calldial", rtype="POST", headers=headers, rdata=body_dict)
+<<<<<<< Updated upstream
             
             else:
                 print("Could not query status of the phone. Exiting now.")
@@ -1327,6 +2128,16 @@ class vvx():
         elif pdmssp:
             call = self.getCallStatusV2(pdmssp=True)
             
+=======
+            
+            else:
+                print("Could not query status of the phone. Exiting now.")
+                return call
+                
+        elif pdmssp:
+            call = self.getCallStatusV2(pdmssp=True)
+            
+>>>>>>> Stashed changes
             if call != None:
                 # validates if active session exists before placing call.
                 if len(call["data"]["body"]["data"]) >= 1:
@@ -1410,6 +2221,7 @@ class vvx():
                         timelapsed = True
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                         if duration > 0:                       
                             if ( dest == session_RemotePartyNumber ) & ( callstate == "Connected" ):
                                 # Validates called party number and connected state before executing callEnd.
@@ -1466,11 +2278,48 @@ class vvx():
                             print(f"CallHandle[{call_dict['CallHandle']}]: Resume attempt to '{dest}'failed. \nPlease try end the session using Call End method.")
                             loop = False
 
+=======
+                    elif ( call_dict['CallState'] == "Connected" ) & ( timelapsed == True ):
+                        # detects that call has connected and duration lapsed, and so attempt to end call.
+                        print(f"CallHandle[{call_dict['CallHandle']}]: Attempt to end call now...")
+                              
+                        if not pdmssp:
+                            end = self.callEnd(call_dict['CallHandle'])
+                        elif pdmssp:
+                            end = self.callEnd(call_dict['CallHandle'], True)
+
+                        if end != None:
+                            print(f"CallHandle[{call_dict['CallHandle']}]: Call to '{dest}' has ended.")
+                            return end
+                        else:
+                            # call end attempt failure, and so exit loop.
+                            print(f"CallHandle[{call_dict['CallHandle']}]: End call attempt to '{dest}'failed. \nPlease try end the session using Call End method.")
+                            loop = False          
+                    
+                    elif ( call_dict['CallState'] == "Hold" ):
+                        # detects that call has been put on hold, and so attempt to resume call.
+                        print(f"CallHandle[{call_dict['CallHandle']}]: Attempt to resume call now...")
+                              
+                        if not pdmssp:
+                            resume = self.callResume()
+                        elif pdmssp:
+                            resume = self.callResume(True)
+
+                        if resume != None:
+                            print(f"CallHandle[{call_dict['CallHandle']}]: Resume call successful.")
+                        else:
+                            print(f"CallHandle[{call_dict['CallHandle']}]: Resume attempt to '{dest}'failed. \nPlease try end the session using Call End method.")
+                            loop = False
+
+>>>>>>> Stashed changes
                     elif ( call_dict['CallState'] == "Disconnected" ):
                         # detects that call dial has failed and disconnected, and so exit loop.
                         print(f"CallHandle[{call_dict['CallHandle']}]: No more calls detected on phone. Exiting now.")
                         loop = False
                               
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             return dev.json()
         
@@ -1630,8 +2479,13 @@ class vvx():
                                      headers=pdmssp_headers, rdata=pdmssp_body)           
             if dev != None:
                 return dev.json()
+<<<<<<< Updated upstream
 
 
+=======
+
+
+>>>>>>> Stashed changes
     def callIgnore(self, pdmssp=False):
         """
         Method calls ucs api, POST "callignore" : "/api/v1/callctrl/ignoreCall", either to phone or pdmssp, determined by pdmssp
@@ -1811,6 +2665,7 @@ class vvx():
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         
     def simulateTextInput(self, textinput, replacetext="true", ctype="application/json"):
         """
@@ -1820,6 +2675,9 @@ class vvx():
                 with the value provided.),
                 ctype as string(Content-Type)
         OUTPUT: Returns response body as dict when successful, None when unsuccessful.
+=======
+    def simulateTextInput(self, textinput, replacetext="true", pdmssp=False):
+>>>>>>> Stashed changes
 =======
     def simulateTextInput(self, textinput, replacetext="true", pdmssp=False):
 >>>>>>> Stashed changes
