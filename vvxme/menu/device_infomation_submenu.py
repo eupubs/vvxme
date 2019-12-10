@@ -97,28 +97,9 @@ def device_infomation_submenu(dev, pdmssp=False):
             print("==================================================")            
             res = dev.getRunningConfig(pdmssp)
             print("")
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            input("Press Enter to continue...")
-            menu.clear()        
-        elif choice == "6":
-            # Show Running info
-            menu.clear()
-            print(f"Running Config - {dev._qpaths_dict['runningConfig']}")
-            print("==================================================")            
-            menu.display_dict(dev.getRunningConfig()["data"])
-            print("")
-            input("Press Enter to continue...")
-=======
             if res != None:
                 menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
             input("\nPress Enter to continue...")
->>>>>>> Stashed changes
-=======
-            if res != None:
-                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
-            input("\nPress Enter to continue...")
->>>>>>> Stashed changes
             menu.clear()
         elif choice == "7":
             # Show session stats
@@ -126,105 +107,6 @@ def device_infomation_submenu(dev, pdmssp=False):
             print(f"Session Stats - {dev._qpaths_dict['sessionStats']}")
             print("===============================================")            
             res = dev.getSessionStats(pdmssp)
-<<<<<<< Updated upstream
-            print("")
-<<<<<<< Updated upstream
-            input("Press Enter to continue...")
-=======
-            if res != None:
-                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
-            input("\nPress Enter to continue...")
->>>>>>> Stashed changes
-            menu.clear()        
-        elif choice == "8":
-            # Show call logs 
-            menu.clear()      
-<<<<<<< Updated upstream
-            calllogs_submenu(dev)
-=======
-            calllogs_submenu(dev, pdmssp)
->>>>>>> Stashed changes
-            menu.clear()
-        elif choice == "0":
-            # Exit menu
-            loop = False
-        else:
-            print(f"Invalid input '{choice}' >> Expecting [0-7].")
-            time.sleep(1)
-            menu.clear()
-
-
-# In[ ]:
-
-
-<<<<<<< Updated upstream
-def calllogs_submenu(dev):  
-=======
-def calllogs_submenu(dev, pdmssp=False):  
->>>>>>> Stashed changes
-    """
-    Method - Show Call Logs Menu
-    INPUTS: dev as object 
-    OUTPUT: none
-    """
-    
-    loop = True
-    menu.clear()
-
-    while loop:
-        print("Call Logs Menu")
-        print("==============")
-        print("1. Show Missed Calls")
-        print("2. Show Received Calls")
-        print("3. Show Placed Calls")
-        print("0. Exit")
-        choice = input("Enter your choice[0-3]: ")
-
-        if choice == "1":
-            ## Show missed calls
-            menu.clear()
-            print(f"Missed Calls - {dev._qpaths_dict['callLogs_missed']}")
-            print("===========================================")
-<<<<<<< Updated upstream
-            menu.display_dict(dev.getCallLogs("missed")["data"])
-            print("")
-            input("Press Enter to continue...")
-=======
-            res = dev.getCallLogs("missed", pdmssp)
-            print("")                  
-            if res != None:
-                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
-            input("\nPress Enter to continue...")
->>>>>>> Stashed changes
-            menu.clear()
-        elif choice == "2":
-            # Show received calls
-            menu.clear()
-            print(f"Received Calls - {dev._qpaths_dict['callLogs_received']}")
-            print("===============================================")
-<<<<<<< Updated upstream
-            menu.display_dict(dev.getCallLogs("received")["data"])
-            print("")
-            input("Press Enter to continue...")
-=======
-            res = dev.getCallLogs("received", pdmssp)
-            print("")                  
-            if res != None:
-                menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
-            input("\nPress Enter to continue...")
->>>>>>> Stashed changes
-            menu.clear()
-        elif choice == "3":
-            # Show placed calls
-            menu.clear()
-            print(f"Placed Calls - {dev._qpaths_dict['callLogs_placed']}")
-            print("===========================================")
-<<<<<<< Updated upstream
-            menu.display_dict(dev.getCallLogs("placed")["data"])
-            print("")
-            input("Press Enter to continue...")
-=======
-=======
             print("")
             if res != None:
                 menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
@@ -293,16 +175,11 @@ def calllogs_submenu(dev, pdmssp=False):
             menu.clear()
             print(f"Placed Calls - {dev._qpaths_dict['callLogs_placed']}")
             print("===========================================")
->>>>>>> Stashed changes
             res = dev.getCallLogs("placed", pdmssp)
             print("")                  
             if res != None:
                 menu.display_dict(res["data"]["body"]["data"]) if pdmssp else menu.display_dict(res["data"])
             input("\nPress Enter to continue...")
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             menu.clear()
         elif choice == "0":
             # Exit menu

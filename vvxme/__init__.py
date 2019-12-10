@@ -4,19 +4,12 @@
 # In[4]:
 
 name = "vvxme"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-__version__ = "1.0.0.post6"
-=======
-__version__ = "1.1.0"
->>>>>>> Stashed changes
-=======
-__version__ = "1.1.0.post1"
->>>>>>> Stashed changes
+__version__ = "1.1.0.post2"
 __all__ = [ "vvx" ]
 
 
 # In[ ]:
+
 
 from .vvxme import vvx
 

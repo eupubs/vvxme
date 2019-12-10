@@ -1,7 +1,12 @@
 # vvxme
-version: 1.1.0.post1
+version: 1.1.0.post2
 
 Manages your Poly VVX powered by RESTAPIs based on (UCS>=6.1) directly or now via PDMS-SP!, with CLI Menu or simply use the available VVX class to develop your own applications.
+
+1.1.0.post2 Updates:
+  - Bug fixes in Web Call Control Menu options Call Reject, Call Hold and Call Resume.
+  - Enabled full Menu options support for PDMS-SP mode.
+  - Added support for Key Events for DialpadStar and DialpadPound. New keyboard keys for Softkeys\[!,@,#,$] >> \[q,w,e,r]
 
 1.1.0.post1 Updates:
   - Bug fix to handle multiple lines.
@@ -15,13 +20,14 @@ What's new on this build:
   - Logging level added into VVX class (INFO as default). PDMS-SP connectivity has INFO logging in console to show live API status. Direct phone connectivity requires DEBUG level to print the same on console.  
 
 Notes on this build:
-  - As of this build, APIs getConfig/setConfig are not working well on PDMS-SP yet. Therefore, certain menu options are not available on PDMS-SP connectivity.
+  - ~~As of this build, APIs getConfig/setConfig are not working well on PDMS-SP yet. Therefore, certain menu options are not available on PDMS-SP connectivity.~~
   - PDMS-SP API calls take a little more time, so please be patience!
 
 
 Prerequisites:
   - Recommends install python 3.5 or above
   - Install the project:  'pip install vvxme'
+  - Upgrade the project: 'pip install vvxme --upgrade'
   - Full features tested on VVX (non-touch screen) models running UCS 6.1. Earlier version will exibit some API errors.
   - Environment variable 'HOME' has to be defined containing a valid directory/folder, to hold configuraiton file (pdmssp.cfg) containing PDMS-SP credentials- client_id, client_secret and org_id. Sample pdmssp.cfg is included in package under data folder.
 

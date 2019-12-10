@@ -40,15 +40,7 @@ def flush_input():
         termios.tcflush(sys.stdin, termios.TCIOFLUSH)
 
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-# In[9]:
-=======
 # In[ ]:
->>>>>>> Stashed changes
-=======
-# In[ ]:
->>>>>>> Stashed changes
 
 
 def display_dict(dev, indent_count=0):
@@ -233,8 +225,6 @@ def getduration_input():
 # In[ ]:
 
 
-<<<<<<< Updated upstream
-=======
 def getcallhandle_input():
     """
     Method collects user inputs for callhandle as str
@@ -267,7 +257,6 @@ def getcallhandle_input():
 # In[ ]:
 
 
->>>>>>> Stashed changes
 def getconfirmation_input(action):
     """
     Method collects user confirmation to proceed with action 
@@ -328,12 +317,6 @@ def connect_device(module_version, username="Polycom", password="789"):
 # In[ ]:
 
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-def configfile_parser(filename="import.cfg"):
-=======
-=======
->>>>>>> Stashed changes
 def pdmssp_connect_device(module_version):
     """
     Method collects user inputs for phone's MAC address.
@@ -414,27 +397,17 @@ def pdmssp_configfile_parser(module_version):
         return body      
         
     except KeyError as key_err:
-<<<<<<< Updated upstream
-        logging.error(f"KeyError Exception: {key_err}")
-    except configparser.Error as err:
-        logging.info(f"Exception: {err}")
-=======
         print(f"\nKeyError Exception: {key_err}")
         input("\nPress Enter to continue...")
     except configparser.Error as err:
         print(f"\nException: {err}")
         input("\nPress Enter to continue...")
->>>>>>> Stashed changes
 
 
 # In[ ]:
 
 
 def ucs_configfile_parser(filename="import.cfg"):
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     """
     Method attempts to parse input 'filename' as XML first. Upon XML parse failure, attempt next to parse as JSON.
     Method doesn't cater for absolute path+name, expects 'filename' to exists in current folder only.

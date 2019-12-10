@@ -75,8 +75,8 @@ def web_call_controls_submenu(dev, pdmssp=False):
             menu.clear()
         elif choice == "5":
             menu.clear()
-            print(f"Call Reject - {dev._qpaths_dict['callignore']}")
-            print("=========================================")
+            print(f"Call Ignore - {dev._qpaths_dict['callignore']}")
+            print("==========================================")
             res = menu.getconfirmation_input("Call Reject")
             if res:
                 print("Ignoring Call...")
@@ -92,7 +92,7 @@ def web_call_controls_submenu(dev, pdmssp=False):
             res = menu.getconfirmation_input("Call Hold")
             if res:
                 print("Holding Call...")
-                print(dev.callIgnore(pdmssp))
+                print(dev.callHold(pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")
@@ -104,7 +104,7 @@ def web_call_controls_submenu(dev, pdmssp=False):
             res = menu.getconfirmation_input("Call Resume")
             if res:
                 print("Resuming Call...")
-                print(dev.callIgnore(pdmssp))
+                print(dev.callResume(pdmssp))
             else:
                 print("\nNo action taken.")
             input("\nPress Enter to continue...")

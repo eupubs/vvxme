@@ -47,46 +47,19 @@ def selection_menu(dev, pdmssp=False):
             menu.clear()
         elif choice == "2":
             # Calls device_management_submenu
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            menu.clear()
-            menu.device_management_submenu(dev)
-            menu.clear()
-        elif choice == "3":
-            # Calls quick_configuration_submenu
-=======
->>>>>>> Stashed changes
-            menu.clear()
-            menu.device_management_submenu(dev, pdmssp)
-            menu.clear()
-<<<<<<< Updated upstream
-        elif choice == "4":
-            # Calls web_call_controls_submenu
-=======
-        elif choice == "3":
-            # Calls quick_configuration_submenu
->>>>>>> Stashed changes
-=======
             menu.clear()
             menu.device_management_submenu(dev, pdmssp)
             menu.clear()
         elif choice == "3":
             # Calls quick_configuration_submenu
->>>>>>> Stashed changes
             menu.clear()
             menu.quick_configuration_submenu(dev, pdmssp)
             menu.clear()
-<<<<<<< Updated upstream
-=======
         elif choice == "4":
             # Calls web_call_controls_submenu
             menu.clear()
             menu.web_call_controls_submenu(dev, pdmssp)
             menu.clear()
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         elif choice == "5":
             # Calls simulate_key_events_submenu
             menu.clear()

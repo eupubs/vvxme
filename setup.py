@@ -47,28 +47,12 @@ setup(
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    version='1.0.0.post6',  # Required
-=======
-    version='1.1.0',  # Required
->>>>>>> Stashed changes
-=======
-    version='1.1.0.post1',  # Required
->>>>>>> Stashed changes
+    version='1.1.0.post2',  # Required
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    description='Manages your Poly VVX powered by RESTAPIs based on (UCS>=6.1), with CLI Menu or simply use the available VVX class to develop your own applications.',  # Optional
-=======
     description='Manages your Poly VVX powered by RESTAPIs based on (UCS>=6.1) directly or now via PDMS-SP!, with CLI Menu or simply use the available VVX class to develop your own applications.',  # Optional
->>>>>>> Stashed changes
-=======
-    description='Manages your Poly VVX powered by RESTAPIs based on (UCS>=6.1) directly or now via PDMS-SP!, with CLI Menu or simply use the available VVX class to develop your own applications.',  # Optional
->>>>>>> Stashed changes
 
     # This is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.

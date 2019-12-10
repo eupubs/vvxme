@@ -83,26 +83,31 @@ def simulatekeys_submenu(dev, pdmssp=False):
         "enter" : "Select",
         "backspace" : "Delete",
         "delete" : "Delete",
-        "!" : "SoftKey1",
-        "@" : "SoftKey2",
-        "#" : "SoftKey3",
-        "$" : "SoftKey4",
+        "q" : "SoftKey1",
+        "Q" : "SoftKey1",
+        "w" : "SoftKey2",
+        "W" : "SoftKey2",
+        "e" : "SoftKey3",
+        "E" : "SoftKey3",
+        "r" : "SoftKey4",
+        "R" : "SoftKey4",
         "+" : "VolUp",
-        "-" : "VolDown"
+        "-" : "VolDown",
+        "*" : "DialpadStar",
+        "#" : "DialpadPound"
     }
     
     mac_softkeys_dict = {
-        "Softkey1" : [ 56, 18 ],
-        "Softkey2" : [ 56, 19 ],
-        "Softkey3" : [ 56, 20 ],
-        "Softkey4" : [ 56, 21 ]
+        "DialpadPound" : [ 56, 60, 20 ],
+        "DialpadStar" : [ 56, 60, 28 ]
     }
     
+    print("***MAC Users: Please turn off Caps Lock!***\n")
     print("Keyboard Legend:")
     print("================")
-    print("Arrows:[up, down, left, right], Numbers:[0-9]") 
+    print("Arrows:[up, down, left, right], Numbers:[0-9], Star:[*], Pound:[#]") 
     print("Letters:[(h)ome, (m)icMute, (r)edial, (e)nter, backspace/delete]")
-    print("Softkeys(1,2,3,4): [!, @, #, $], Volume: [+,-]")
+    print("Softkeys(1,2,3,4): [q, w, e, r], Volume: [+,-]")
     print("\nPress 'esc' to exit.\n")
         
     def print_pressed_keys(e):
